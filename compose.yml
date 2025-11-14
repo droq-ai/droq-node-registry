@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  registry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: droq-registry-service
+    ports:
+      - "8002:8002"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8002
+      - LOG_LEVEL=info
+      - LANGFLOW_EXECUTOR_NODE_URL=http://localhost:8000
+    volumes:
+      # Mount nodes directory to access components.json files
+      - ../nodes:/app/nodes:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
