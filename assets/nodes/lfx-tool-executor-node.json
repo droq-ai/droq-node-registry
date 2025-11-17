@@ -1,0 +1,24 @@
+{
+  "node_id": "lfx-tool-executor-node",
+  "name": "LFx Tool Executor Node",
+  "description": "Specialized executor for Langflow tool components (AgentQL, file utilities, web tools).",
+  "source_code_location": "../nodes/lfx-tool-executor-node",
+  "docker_image": "lfx-tool-executor-node:local",
+  "deployment_location": "local",
+  "api_url": "http://localhost:8005",
+  "ip_address": "127.0.0.1",
+  "status": "active",
+  "components": {
+    "AgentQL": "lfx.components.agentql.agentql_api",
+    "SaveToFileComponent": "lfx.components.data.save_file",
+    "PythonCodeStructuredTool": "lfx.components.tools.python_code_structured_tool",
+    "PythonREPLToolComponent": "lfx.components.tools.python_repl",
+    "TavilySearchToolComponent": "lfx.components.tools.tavily_search_tool",
+    "SerpAPIComponent": "lfx.components.tools.serp_api",
+    "SearchAPIComponent": "lfx.components.tools.search_api",
+    "SearXNGToolComponent": "lfx.components.tools.searxng",
+    "GoogleSearchAPIComponent": "lfx.components.tools.google_search_api",
+    "WikipediaAPIComponent": "lfx.components.tools.wikipedia_api"
+  }
+}
+
