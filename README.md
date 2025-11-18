@@ -160,15 +160,77 @@ The service will start on `http://localhost:8002`.
 
 ## Running with Docker
 
+The service includes a `.env` file for customizable configuration. Copy and modify it as needed:
+
 ```bash
+# Start with default configuration
+docker compose up -d
+
+# Or with custom .env file
+cp .env.example .env
+# Edit .env with your preferred settings
 docker compose up -d
 ```
 
+### Environment Configuration
+
+Create a `.env` file to customize the Docker setup:
+
+```bash
+# Host port for the Droq Registry Service
+# Change this value to expose the service on a different port on your host machine
+DROQ_RQ_HOST_PORT=8002
+
+# Container port is hardcoded to 8002 inside the container
+
+# Service configuration
+DROQ_RQ_HOST=0.0.0.0
+DROQ_RQ_LOG_LEVEL=INFO
+
+# External service URLs
+DROQ_RQ_LANGFLOW_EXECUTOR_NODE_URL=http://localhost:8000
+```
+
+### Docker Compose Commands
+
+```bash
+# Start the service
+docker compose up -d
+
+# View logs
+docker compose logs -f registry
+
+# Stop the service
+docker compose down
+
+# Rebuild and start
+docker compose up -d --build
+
+# Check service health
+docker compose ps
+curl http://localhost:8002/health
+```
+
+### Docker Volumes
+
+The service mounts the `../nodes` directory (read-only) to access `components.json` files from executor nodes. Make sure the nodes directory exists at the expected relative path.
+
 ## Environment Variables
 
-- `HOST`: Server host (default: `0.0.0.0`)
-- `PORT`: Server port (default: `8002`)
-- `LOG_LEVEL`: Logging level (default: `info`)
+### Docker Environment Variables
+All Droq Registry Service environment variables use the `DROQ_RQ_` prefix to avoid conflicts with other services:
+
+- `DROQ_RQ_HOST_PORT`: Port exposed on the host machine (default: `8002`)
+- `DROQ_RQ_HOST`: Server host inside container (default: `0.0.0.0`)
+- `DROQ_RQ_LOG_LEVEL`: Logging level (default: `INFO`)
+- `DROQ_RQ_LANGFLOW_EXECUTOR_NODE_URL`: URL for the Langflow executor node (default: `http://localhost:8000`)
+
+**Note**: The container port is hardcoded to 8002. Only the host port (`DROQ_RQ_HOST_PORT`) can be customized.
+
+### Application Environment Variables
+- `PORT`: Server port (application internal, default: `8002`)
 - `RELOAD`: Enable auto-reload (default: `true`)
 - `REGISTRY_DB_PATH`: Path to SQLite database file (default: `registry.db`)
+
+**Note**: For Docker deployment, use the `.env` file to configure the Docker environment variables with the `DROQ_RQ_` prefix. The application variables can be set directly in the `compose.yml` file if needed.
 

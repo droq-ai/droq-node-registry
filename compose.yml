@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   registry:
     build:
@@ -7,12 +5,12 @@ services:
       dockerfile: Dockerfile
     container_name: droq-registry-service
     ports:
-      - "8002:8002"
+      - "${DROQ_RQ_HOST_PORT:-8002}:8002"
     environment:
-      - HOST=0.0.0.0
+      - HOST=${DROQ_RQ_HOST:-0.0.0.0}
       - PORT=8002
-      - LOG_LEVEL=info
-      - LANGFLOW_EXECUTOR_NODE_URL=http://localhost:8000
+      - LOG_LEVEL=${DROQ_RQ_LOG_LEVEL:-INFO}
+      - LANGFLOW_EXECUTOR_NODE_URL=${DROQ_RQ_LANGFLOW_EXECUTOR_NODE_URL:-http://localhost:8000}
     volumes:
       # Mount nodes directory to access components.json files
       - ../nodes:/app/nodes:ro
