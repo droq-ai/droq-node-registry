@@ -19,6 +19,8 @@
       "author": "Dorq"
     }
   },
+  "repository_url": "https://github.com/droq-ai/dfx-math-executor-node",
+  "category": "droq-core",
   "commit": "79cf4e67bf2c2c3a5b3f24f0cdd46bbbf6ea6471",
   "updated_at": "2025-11-27T22:10:32Z"
 }

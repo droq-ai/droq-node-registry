@@ -2095,6 +2095,8 @@
       "display_name": "Zep Chat Memory"
     }
   },
+  "repository_url": "https://github.com/droq-ai/lfx-tool-executor-node",
+  "category": "droq-core",
   "commit": "98e70683dace6d3969ac0ead220600999ad3dfc3",
   "updated_at": "2025-11-27T09:29:44Z"
 }

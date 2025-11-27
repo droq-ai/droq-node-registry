@@ -5,12 +5,51 @@ Extract node.json files from Git submodules and place them in assets/nodes/
 import json
 import logging
 import subprocess
+import re
 from pathlib import Path
 from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+def parse_gitmodules():
+    """Parse .gitmodules file to get submodule URLs"""
+    gitmodules_path = Path(__file__).parent.parent / ".gitmodules"
+    submodule_urls = {}
+
+    if not gitmodules_path.exists():
+        logger.warning(f".gitmodules file not found at {gitmodules_path}")
+        return submodule_urls
+
+    try:
+        with open(gitmodules_path, 'r') as f:
+            content = f.read()
+
+        # Parse submodule sections
+        submodule_pattern = r'\[submodule "(.*?)"\](.*?)url = (.*?)\n'
+        matches = re.findall(submodule_pattern, content, re.DOTALL)
+
+        for name, section, url in matches:
+            # Extract path from the section
+            path_match = re.search(r'path = (.*)', section)
+            path = path_match.group(1).strip() if path_match else ""
+
+            # Convert git@ to HTTPS URL for GitHub
+            if url.startswith('git@github.com:'):
+                repo_name = url.replace('git@github.com:', '').replace('.git', '')
+                https_url = f"https://github.com/{repo_name}"
+                submodule_urls[path] = https_url
+            elif url.startswith('https://github.com/'):
+                submodule_urls[path] = url.replace('.git', '')
+            else:
+                # Keep original URL if it's not GitHub
+                submodule_urls[path] = url
+
+    except Exception as e:
+        logger.warning(f"Failed to parse .gitmodules: {e}")
+
+    return submodule_urls
 
 def get_git_commit_info(submodule_path):
     """Get git commit information for a submodule"""
@@ -66,6 +105,10 @@ def extract_node_configs():
     nodes_dir = registry_root / "nodes"
     assets_dir = registry_root / "assets" / "nodes"
 
+    # Parse .gitmodules to get repository URLs
+    submodule_urls = parse_gitmodules()
+    logger.info(f"Found {len(submodule_urls)} submodule URLs")
+
     logger.info(f"Registry root: {registry_root}")
     logger.info(f"Nodes directory: {nodes_dir}")
     logger.info(f"Assets directory: {assets_dir}")
@@ -114,6 +157,19 @@ def extract_node_configs():
 
             # Update source_code_location to point to submodule
             node_config['source_code_location'] = str(submodule_dir.relative_to(registry_root))
+
+            # Get repository URL from .gitmodules
+            submodule_path = str(submodule_dir.relative_to(registry_root))
+            repository_url = submodule_urls.get(submodule_path)
+            if repository_url:
+                node_config['repository_url'] = repository_url
+                logger.info(f"Added repository URL: {repository_url}")
+            else:
+                logger.warning(f"No repository URL found for {submodule_path}")
+
+            # Add category with default value
+            if 'category' not in node_config:
+                node_config['category'] = 'droq-core'
 
             # Get git commit information
             git_info = get_git_commit_info(submodule_dir)
