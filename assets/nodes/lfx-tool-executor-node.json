@@ -1,24 +1,2098 @@
 {
-  "node_id": "lfx-tool-executor-node",
-  "name": "LFx Tool Executor Node",
-  "description": "Specialized executor for Langflow tool components (AgentQL, file utilities, web tools).",
-  "source_code_location": "../nodes/lfx-tool-executor-node",
-  "docker_image": "lfx-tool-executor-node:local",
-  "deployment_location": "local",
+  "node_id": "lfx-runtime-executor-node",
+  "name": "Langflow Executor Node",
+  "description": "Langflow Component Executor Node - Executes Langflow components in isolated environments with comprehensive AI model integrations, data processing capabilities, and workflow orchestration",
+  "version": "1.0.0",
   "api_url": "http://localhost:8005",
-  "ip_address": "127.0.0.1",
+  "ip_address": "0.0.0.0",
+  "docker_image": "droq/langflow-executor:v1",
+  "deployment_location": "local",
   "status": "active",
+  "author": "Langflow",
+  "created_at": "2025-11-23T00:00:00Z",
+  "source_code_location": "nodes/lfx-tool-executor-node",
   "components": {
-    "AgentQL": "lfx.components.agentql.agentql_api",
-    "SaveToFileComponent": "lfx.components.data.save_file",
-    "PythonCodeStructuredTool": "lfx.components.tools.python_code_structured_tool",
-    "PythonREPLToolComponent": "lfx.components.tools.python_repl",
-    "TavilySearchToolComponent": "lfx.components.tools.tavily_search_tool",
-    "SerpAPIComponent": "lfx.components.tools.serp_api",
-    "SearchAPIComponent": "lfx.components.tools.search_api",
-    "SearXNGToolComponent": "lfx.components.tools.searxng",
-    "GoogleSearchAPIComponent": "lfx.components.tools.google_search_api",
-    "WikipediaAPIComponent": "lfx.components.tools.wikipedia_api"
+    "AIMLEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.aiml.aiml_embeddings",
+      "description": "Generate embeddings using the AI/ML API.",
+      "author": "Langflow",
+      "display_name": "AI/ML API Embeddings"
+    },
+    "AIMLModelComponent": {
+      "path": "lfx.src.lfx.components.aiml.aiml",
+      "description": "Generates text using AI/ML API LLMs.",
+      "author": "Langflow",
+      "display_name": "AI/ML API"
+    },
+    "APIRequestComponent": {
+      "path": "lfx.src.lfx.components.data.api_request",
+      "description": "Make HTTP requests using URL or cURL commands.",
+      "author": "Langflow",
+      "display_name": "API Request"
+    },
+    "AddContentToPage": {
+      "path": "lfx.src.lfx.components.Notion.add_content_to_page",
+      "description": "Convert markdown text to Notion blocks and append them to a Notion page.",
+      "author": "Langflow",
+      "display_name": "Markdown Text"
+    },
+    "AgentComponent": {
+      "path": "lfx.src.lfx.components.agents.agent",
+      "description": "Define the agent",
+      "author": "Langflow",
+      "display_name": "Model Provider"
+    },
+    "AlterMetadataComponent": {
+      "path": "lfx.src.lfx.components.processing.alter_metadata",
+      "description": "Adds/Removes Metadata Dictionary on inputs",
+      "author": "Langflow",
+      "display_name": "Alter Metadata"
+    },
+    "AmazonBedrockComponent": {
+      "path": "lfx.src.lfx.components.amazon.amazon_bedrock_model",
+      "description": "Langflow component for AmazonBedroc",
+      "author": "Langflow",
+      "display_name": "Model ID"
+    },
+    "AmazonBedrockConverseComponent": {
+      "path": "lfx.src.lfx.components.amazon.amazon_bedrock_converse",
+      "description": "Langflow component for AmazonBedrockConvers",
+      "author": "Langflow",
+      "display_name": "Model ID"
+    },
+    "AmazonBedrockEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.amazon.amazon_bedrock_embedding",
+      "description": "Generate embeddings using Amazon Bedrock models.",
+      "author": "Langflow",
+      "display_name": "Model Id"
+    },
+    "AmazonKendraRetrieverComponent": {
+      "path": "lfx.src.lfx.components.deactivated.amazon_kendra",
+      "description": "Retriever that uses the Amazon Kendra API.",
+      "author": "Langflow",
+      "display_name": "Index ID"
+    },
+    "AnthropicModelComponent": {
+      "path": "lfx.src.lfx.components.anthropic.anthropic",
+      "description": "Generate text using Anthropic",
+      "author": "Langflow",
+      "display_name": "Anthropic"
+    },
+    "ApifyActorsComponent": {
+      "path": "lfx.src.lfx.components.apify.apify_actor",
+      "description": "Langflow component for ApifyActor",
+      "author": "Langflow",
+      "display_name": "Apify Actors"
+    },
+    "ArXivComponent": {
+      "path": "lfx.src.lfx.components.arxiv.arxiv",
+      "description": "Search and retrieve papers from arXiv.org",
+      "author": "Langflow",
+      "display_name": "arXiv"
+    },
+    "AssemblyAIGetSubtitles": {
+      "path": "lfx.src.lfx.components.assemblyai.assemblyai_get_subtitles",
+      "description": "Export your transcript in SRT or VTT format for subtitles and closed captions",
+      "author": "Langflow",
+      "display_name": "AssemblyAI Get Subtitles"
+    },
+    "AssemblyAILeMUR": {
+      "path": "lfx.src.lfx.components.assemblyai.assemblyai_lemur",
+      "description": "Apply Large Language Models to spoken data using the AssemblyAI LeMUR framework",
+      "author": "Langflow",
+      "display_name": "AssemblyAI LeMUR"
+    },
+    "AssemblyAIListTranscripts": {
+      "path": "lfx.src.lfx.components.assemblyai.assemblyai_list_transcripts",
+      "description": "Retrieve a list of transcripts from AssemblyAI with filtering options",
+      "author": "Langflow",
+      "display_name": "AssemblyAI List Transcripts"
+    },
+    "AssemblyAITranscriptionJobCreator": {
+      "path": "lfx.src.lfx.components.assemblyai.assemblyai_start_transcript",
+      "description": "Create a transcription job for an audio file using AssemblyAI with advanced options",
+      "author": "Langflow",
+      "display_name": "AssemblyAI Start Transcript"
+    },
+    "AssemblyAITranscriptionJobPoller": {
+      "path": "lfx.src.lfx.components.assemblyai.assemblyai_poll_transcript",
+      "description": "Poll for the status of a transcription job using AssemblyAI",
+      "author": "Langflow",
+      "display_name": "AssemblyAI Poll Transcript"
+    },
+    "AstraDBCQLToolComponent": {
+      "path": "lfx.src.lfx.components.datastax.astradb_cql",
+      "description": "Create a tool to get transactional data from DataStax Astra DB CQL Table",
+      "author": "Langflow",
+      "display_name": "Tool Name"
+    },
+    "AstraDBChatMemory": {
+      "path": "lfx.src.lfx.components.datastax.astradb_chatmemory",
+      "description": "Retrieves and stores chat messages from Astra DB.",
+      "author": "Langflow",
+      "display_name": "Astra DB Chat Memory"
+    },
+    "AstraDBGraphVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.datastax.astradb_graph",
+      "description": "Implementation of Graph Vector Store using Astra DB",
+      "author": "Langflow",
+      "display_name": "Metadata incoming links key"
+    },
+    "AstraDBToolComponent": {
+      "path": "lfx.src.lfx.components.datastax.astradb_tool",
+      "description": "Search query to find relevant documents.",
+      "author": "Langflow",
+      "display_name": "Tool Name"
+    },
+    "AstraDBVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.datastax.astradb_vectorstore",
+      "description": "Ingest and search documents in Astra DB",
+      "author": "Langflow",
+      "display_name": "Embedding Model"
+    },
+    "AstraVectorizeComponent": {
+      "path": "lfx.src.lfx.components.datastax.astradb_vectorize",
+      "description": "Configuration options for Astra Vectorize server-side embeddings.",
+      "author": "Langflow",
+      "display_name": "Provider"
+    },
+    "AzureChatOpenAIComponent": {
+      "path": "lfx.src.lfx.components.azure.azure_openai",
+      "description": "Generate text using Azure OpenAI LLMs.",
+      "author": "Langflow",
+      "display_name": "Azure Endpoint"
+    },
+    "AzureOpenAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.azure.azure_openai_embeddings",
+      "description": "Generate embeddings using Azure OpenAI models.",
+      "author": "Langflow",
+      "display_name": "Model"
+    },
+    "BatchRunComponent": {
+      "path": "lfx.src.lfx.components.processing.batch_run",
+      "description": "Runs an LLM on each row of a DataFrame column. If no column is specified, all columns are used.",
+      "author": "Langflow",
+      "display_name": "Batch Run"
+    },
+    "BigQueryExecutorComponent": {
+      "path": "lfx.src.lfx.components.google.google_bq_sql_executor",
+      "description": "Execute SQL queries on Google BigQuery.",
+      "author": "Langflow",
+      "display_name": "BigQuery"
+    },
+    "BingSearchAPIComponent": {
+      "path": "lfx.src.lfx.components.bing.bing_search_api",
+      "description": "Call the Bing Search API.",
+      "author": "Langflow",
+      "display_name": "Bing Search API"
+    },
+    "CSVAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.csv_agent",
+      "description": "Construct a CSV agent from a CSV and tools.",
+      "author": "Langflow",
+      "display_name": "CSV Agent"
+    },
+    "CSVToDataComponent": {
+      "path": "lfx.src.lfx.components.data.csv_to_data",
+      "description": "Load a CSV file, CSV from a file path, or a valid CSV string and convert it to a list of Data",
+      "author": "Langflow",
+      "display_name": "Load CSV"
+    },
+    "CalculatorComponent": {
+      "path": "lfx.src.lfx.components.helpers.calculator_core",
+      "description": "Perform basic arithmetic operations on a given expression.",
+      "author": "Langflow",
+      "display_name": "Calculator"
+    },
+    "CalculatorToolComponent": {
+      "path": "lfx.src.lfx.components.tools.calculator",
+      "description": "Perform basic arithmetic operations on a given expression.",
+      "author": "Langflow",
+      "display_name": "Calculator"
+    },
+    "CassandraChatMemory": {
+      "path": "lfx.src.lfx.components.cassandra.cassandra_chat",
+      "description": "Retrieves and store chat messages from Apache Cassandra.",
+      "author": "Langflow",
+      "display_name": "Cassandra Chat Memory"
+    },
+    "CassandraGraphVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.cassandra.cassandra_graph",
+      "description": "Cassandra Graph Vector Store",
+      "author": "Langflow",
+      "display_name": "Cassandra Graph"
+    },
+    "CassandraVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.cassandra.cassandra",
+      "description": "Cassandra Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Cassandra"
+    },
+    "CharacterTextSplitterComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.character",
+      "description": "Split text by number of characters.",
+      "author": "Langflow",
+      "display_name": "Character Text Splitter"
+    },
+    "ChatInput": {
+      "path": "lfx.src.lfx.components.input_output.chat",
+      "description": "Get chat inputs from the Playground.",
+      "author": "Langflow",
+      "display_name": "Chat Input"
+    },
+    "ChatLiteLLMModelComponent": {
+      "path": "lfx.src.lfx.components.deactivated.chat_litellm_model",
+      "description": "`LiteLLM` collection of large language models.",
+      "author": "Langflow",
+      "display_name": "LiteLLM"
+    },
+    "ChatOllamaComponent": {
+      "path": "lfx.src.lfx.components.ollama.ollama",
+      "description": "Generate text using Ollama Local LLMs.",
+      "author": "Langflow",
+      "display_name": "Ollama"
+    },
+    "ChatOutput": {
+      "path": "lfx.src.lfx.components.input_output.chat_output",
+      "description": "Display a chat message in the Playground.",
+      "author": "Langflow",
+      "display_name": "Chat Output"
+    },
+    "ChatVertexAIComponent": {
+      "path": "lfx.src.lfx.components.vertexai.vertexai",
+      "description": "Generate text using Vertex AI LLMs.",
+      "author": "Langflow",
+      "display_name": "Vertex AI"
+    },
+    "ChromaVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.chroma.chroma",
+      "description": "Chroma Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Collection Name"
+    },
+    "ChunkDoclingDocumentComponent": {
+      "path": "lfx.src.lfx.components.docling.chunk_docling_document",
+      "description": "Use the DocumentDocument chunkers to split the document into chunks.",
+      "author": "Langflow",
+      "display_name": "Data or DataFrame"
+    },
+    "CleanlabEvaluator": {
+      "path": "lfx.src.lfx.components.cleanlab.cleanlab_evaluator",
+      "description": "Evaluates any LLM response using Cleanlab and outputs trust score and explanation.",
+      "author": "Langflow",
+      "display_name": "Cleanlab Evaluator"
+    },
+    "CleanlabRAGEvaluator": {
+      "path": "lfx.src.lfx.components.cleanlab.cleanlab_rag_evaluator",
+      "description": "Evaluates context, query, and response from a RAG pipeline using Cleanlab and outputs trust metrics.",
+      "author": "Langflow",
+      "display_name": "Cleanlab RAG Evaluator"
+    },
+    "CleanlabRemediator": {
+      "path": "lfx.src.lfx.components.cleanlab.cleanlab_remediator",
+      "description": "Langflow component for CleanlabRemediator",
+      "author": "Langflow",
+      "display_name": "Cleanlab Remediator"
+    },
+    "ClickhouseVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.clickhouse.clickhouse",
+      "description": "ClickHouse Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "ClickHouse"
+    },
+    "CloudflareWorkersAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.cloudflare.cloudflare",
+      "description": "Generate embeddings using Cloudflare Workers AI models.",
+      "author": "Langflow",
+      "display_name": "Cloudflare account ID"
+    },
+    "CodeBlockExtractor": {
+      "path": "lfx.src.lfx.components.deactivated.code_block_extractor",
+      "description": "Extracts code block from text.",
+      "author": "Langflow",
+      "display_name": "Code Block Extractor"
+    },
+    "CohereComponent": {
+      "path": "lfx.src.lfx.components.cohere.cohere_models",
+      "description": "Generate text using Cohere LLMs.",
+      "author": "Langflow",
+      "display_name": "Cohere Language Models"
+    },
+    "CohereEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.cohere.cohere_embeddings",
+      "description": "Generate embeddings using Cohere models.",
+      "author": "Langflow",
+      "display_name": "Cohere Embeddings"
+    },
+    "CohereRerankComponent": {
+      "path": "lfx.src.lfx.components.cohere.cohere_rerank",
+      "description": "Rerank documents using the Cohere API.",
+      "author": "Langflow",
+      "display_name": "Cohere Rerank"
+    },
+    "CombinatorialReasonerComponent": {
+      "path": "lfx.src.lfx.components.icosacomputing.combinatorial_reasoner",
+      "description": "Uses Combinatorial Optimization to construct an optimal prompt with embedded reasons. Sign up here:\\nhttps://forms.gle/oWNv2NKjBNaqqvCx6",
+      "author": "Langflow",
+      "display_name": "Combinatorial Reasoner"
+    },
+    "CombineTextComponent": {
+      "path": "lfx.src.lfx.components.processing.combine_text",
+      "description": "Concatenate two text sources into a single text chunk using a specified delimiter.",
+      "author": "Langflow",
+      "display_name": "Combine Text"
+    },
+    "CometAPIComponent": {
+      "path": "lfx.src.lfx.components.cometapi.cometapi",
+      "description": "All AI Models in One API 500+ AI Models",
+      "author": "Langflow",
+      "display_name": "CometAPI"
+    },
+    "ComposioAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.composio_api",
+      "description": "Use Composio toolset to run actions with your agent",
+      "author": "Langflow",
+      "display_name": "Entity ID"
+    },
+    "ComposioAgentQLAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.agentql_composio",
+      "description": "Langflow component for ComposioAgentQLAP",
+      "author": "Langflow",
+      "display_name": "AgentQL"
+    },
+    "ComposioAgiledAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.agiled_composio",
+      "description": "Langflow component for ComposioAgiledAP",
+      "author": "Langflow",
+      "display_name": "Agiled"
+    },
+    "ComposioAirtableAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.airtable_composio",
+      "description": "Langflow component for ComposioAirtableAP",
+      "author": "Langflow",
+      "display_name": "Airtable"
+    },
+    "ComposioAsanaAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.asana_composio",
+      "description": "Langflow component for ComposioAsanaAP",
+      "author": "Langflow",
+      "display_name": "Asana"
+    },
+    "ComposioAttioAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.attio_composio",
+      "description": "Langflow component for ComposioAttioAP",
+      "author": "Langflow",
+      "display_name": "Attio"
+    },
+    "ComposioBolnaAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.bolna_composio",
+      "description": "Langflow component for ComposioBolnaAP",
+      "author": "Langflow",
+      "display_name": "Bolna"
+    },
+    "ComposioBrightdataAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.brightdata_composio",
+      "description": "Langflow component for ComposioBrightdataAP",
+      "author": "Langflow",
+      "display_name": "Brightdata"
+    },
+    "ComposioCalendlyAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.calendly_composio",
+      "description": "Langflow component for ComposioCalendlyAP",
+      "author": "Langflow",
+      "display_name": "Calendly"
+    },
+    "ComposioCanvasAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.canvas_composio",
+      "description": "Langflow component for ComposioCanvasAP",
+      "author": "Langflow",
+      "display_name": "Canvas"
+    },
+    "ComposioContentfulAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.contentful_composio",
+      "description": "Langflow component for ComposioContentfulAP",
+      "author": "Langflow",
+      "display_name": "Contentful"
+    },
+    "ComposioDigicertAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.digicert_composio",
+      "description": "Langflow component for ComposioDigicertAP",
+      "author": "Langflow",
+      "display_name": "Digicert"
+    },
+    "ComposioDiscordAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.discord_composio",
+      "description": "Langflow component for ComposioDiscordAP",
+      "author": "Langflow",
+      "display_name": "Discord"
+    },
+    "ComposioDropboxAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.dropbox_compnent",
+      "description": "Langflow component for ComposioDropboxAP",
+      "author": "Langflow",
+      "display_name": "Dropbox"
+    },
+    "ComposioFigmaAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.figma_composio",
+      "description": "Langflow component for ComposioFigmaAP",
+      "author": "Langflow",
+      "display_name": "Figma"
+    },
+    "ComposioFinageAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.finage_composio",
+      "description": "Langflow component for ComposioFinageAP",
+      "author": "Langflow",
+      "display_name": "Finage"
+    },
+    "ComposioFixerAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.fixer_composio",
+      "description": "Langflow component for ComposioFixerAP",
+      "author": "Langflow",
+      "display_name": "Fixer"
+    },
+    "ComposioFlexisignAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.flexisign_composio",
+      "description": "Langflow component for ComposioFlexisignAP",
+      "author": "Langflow",
+      "display_name": "Flexisign"
+    },
+    "ComposioFreshdeskAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.freshdesk_composio",
+      "description": "Langflow component for ComposioFreshdeskAP",
+      "author": "Langflow",
+      "display_name": "Freshdesk"
+    },
+    "ComposioGitHubAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.github_composio",
+      "description": "Langflow component for ComposioGitHubAP",
+      "author": "Langflow",
+      "display_name": "GitHub"
+    },
+    "ComposioGmailAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.gmail_composio",
+      "description": "Langflow component for ComposioGmailAP",
+      "author": "Langflow",
+      "display_name": "Gmail"
+    },
+    "ComposioGoogleCalendarAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googlecalendar_composio",
+      "description": "Langflow component for ComposioGoogleCalendarAP",
+      "author": "Langflow",
+      "display_name": "Google Calendar"
+    },
+    "ComposioGoogleDocsAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googledocs_composio",
+      "description": "Langflow component for ComposioGoogleDocsAP",
+      "author": "Langflow",
+      "display_name": "Google Docs"
+    },
+    "ComposioGoogleSheetsAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googlesheets_composio",
+      "description": "Langflow component for ComposioGoogleSheetsAP",
+      "author": "Langflow",
+      "display_name": "Google Sheets"
+    },
+    "ComposioGoogleTasksAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googletasks_composio",
+      "description": "Langflow component for ComposioGoogleTasksAP",
+      "author": "Langflow",
+      "display_name": "Google Tasks"
+    },
+    "ComposioGoogleclassroomAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googleclassroom_composio",
+      "description": "Langflow component for ComposioGoogleclassroomAP",
+      "author": "Langflow",
+      "display_name": "Google Classroom"
+    },
+    "ComposioGooglemeetAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.googlemeet_composio",
+      "description": "Langflow component for ComposioGooglemeetAP",
+      "author": "Langflow",
+      "display_name": "Google Meet"
+    },
+    "ComposioInstagramAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.instagram_composio",
+      "description": "Langflow component for ComposioInstagramAP",
+      "author": "Langflow",
+      "display_name": "Instagram"
+    },
+    "ComposioJiraAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.jira_composio",
+      "description": "Langflow component for ComposioJiraAP",
+      "author": "Langflow",
+      "display_name": "Jira"
+    },
+    "ComposioJotformAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.jotform_composio",
+      "description": "Langflow component for ComposioJotformAP",
+      "author": "Langflow",
+      "display_name": "Jotform"
+    },
+    "ComposioKlaviyoAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.klaviyo_composio",
+      "description": "Langflow component for ComposioKlaviyoAP",
+      "author": "Langflow",
+      "display_name": "Klaviyo"
+    },
+    "ComposioLinearAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.linear_composio",
+      "description": "Langflow component for ComposioLinearAP",
+      "author": "Langflow",
+      "display_name": "Linear"
+    },
+    "ComposioListennotesAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.listennotes_composio",
+      "description": "Langflow component for ComposioListennotesAP",
+      "author": "Langflow",
+      "display_name": "Listennotes"
+    },
+    "ComposioMiroAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.miro_composio",
+      "description": "Langflow component for ComposioMiroAP",
+      "author": "Langflow",
+      "display_name": "Miro"
+    },
+    "ComposioMissiveAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.missive_composio",
+      "description": "Langflow component for ComposioMissiveAP",
+      "author": "Langflow",
+      "display_name": "Missive"
+    },
+    "ComposioNotionAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.notion_composio",
+      "description": "Langflow component for ComposioNotionAP",
+      "author": "Langflow",
+      "display_name": "Notion"
+    },
+    "ComposioOneDriveAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.onedrive_composio",
+      "description": "Langflow component for ComposioOneDriveAP",
+      "author": "Langflow",
+      "display_name": "OneDrive"
+    },
+    "ComposioOutlookAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.outlook_composio",
+      "description": "Langflow component for ComposioOutlookAP",
+      "author": "Langflow",
+      "display_name": "Outlook"
+    },
+    "ComposioPandadocAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.pandadoc_composio",
+      "description": "Langflow component for ComposioPandadocAP",
+      "author": "Langflow",
+      "display_name": "Pandadoc"
+    },
+    "ComposioRedditAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.reddit_composio",
+      "description": "Langflow component for ComposioRedditAP",
+      "author": "Langflow",
+      "display_name": "Reddit"
+    },
+    "ComposioSlackAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.slack_composio",
+      "description": "Langflow component for ComposioSlackAP",
+      "author": "Langflow",
+      "display_name": "Limit"
+    },
+    "ComposioSlackbotAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.slackbot_composio",
+      "description": "Langflow component for ComposioSlackbotAP",
+      "author": "Langflow",
+      "display_name": "Slackbot"
+    },
+    "ComposioSupabaseAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.supabase_composio",
+      "description": "Langflow component for ComposioSupabaseAP",
+      "author": "Langflow",
+      "display_name": "Supabase"
+    },
+    "ComposioTimelinesAIAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.timelinesai_composio",
+      "description": "Langflow component for ComposioTimelinesAIAP",
+      "author": "Langflow",
+      "display_name": "TimelinesAI"
+    },
+    "ComposioTodoistAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.todoist_composio",
+      "description": "Langflow component for ComposioTodoistAP",
+      "author": "Langflow",
+      "display_name": "Todoist"
+    },
+    "ComposioWrikeAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.wrike_composio",
+      "description": "Langflow component for ComposioWrikeAP",
+      "author": "Langflow",
+      "display_name": "Wrike"
+    },
+    "ComposioYoutubeAPIComponent": {
+      "path": "lfx.src.lfx.components.composio.youtube_composio",
+      "description": "Langflow component for ComposioYoutubeAP",
+      "author": "Langflow",
+      "display_name": "Youtube"
+    },
+    "ConditionalRouterComponent": {
+      "path": "lfx.src.lfx.components.logic.conditional_router",
+      "description": "Routes an input message to a corresponding output based on text comparison.",
+      "author": "Langflow",
+      "display_name": "If-Else"
+    },
+    "ConfluenceComponent": {
+      "path": "lfx.src.lfx.components.confluence.confluence",
+      "description": "Confluence wiki collaboration platform",
+      "author": "Langflow",
+      "display_name": "Confluence"
+    },
+    "ConversationChainComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.conversation",
+      "description": "Chain to have a conversation and load context from memory.",
+      "author": "Langflow",
+      "display_name": "ConversationChain"
+    },
+    "ConvertAstraToTwelveLabs": {
+      "path": "lfx.src.lfx.components.twelvelabs.convert_astra_results",
+      "description": "Converts Astra DB search results to inputs compatible with TwelveLabs Pegasus.",
+      "author": "Langflow",
+      "display_name": "Convert Astra DB to Pegasus Input"
+    },
+    "CouchbaseVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.couchbase.couchbase",
+      "description": "Couchbase Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Couchbase"
+    },
+    "CreateDataComponent": {
+      "path": "lfx.src.lfx.components.processing.create_data",
+      "description": "Dynamically create a Data with a specified number of fields.",
+      "author": "Langflow",
+      "display_name": "Number of Fields"
+    },
+    "CreateListComponent": {
+      "path": "lfx.src.lfx.components.helpers.create_list",
+      "description": "Creates a list of texts.",
+      "author": "Langflow",
+      "display_name": "Create List"
+    },
+    "CrewAIAgentComponent": {
+      "path": "lfx.src.lfx.components.crewai.crewai",
+      "description": "Represents an agent of CrewAI.",
+      "author": "Langflow",
+      "display_name": "CrewAI Agent"
+    },
+    "CugaComponent": {
+      "path": "lfx.src.lfx.components.agents.cuga_agent",
+      "description": "Define the Cuga agent",
+      "author": "Langflow",
+      "display_name": "Model Provider"
+    },
+    "CurrentDateComponent": {
+      "path": "lfx.src.lfx.components.helpers.current_date",
+      "description": "Returns the current date and time in the selected timezone.",
+      "author": "Langflow",
+      "display_name": "Current Date"
+    },
+    "CustomComponent": {
+      "path": "lfx.src.lfx.components.custom_component.custom_component",
+      "description": "Use as a template to create your own component.",
+      "author": "Langflow",
+      "display_name": "Custom Component"
+    },
+    "DataConditionalRouterComponent": {
+      "path": "lfx.src.lfx.components.logic.data_conditional_router",
+      "description": "Route Data object(s) based on a condition applied to a specified key, including boolean validation.",
+      "author": "Langflow",
+      "display_name": "Condition"
+    },
+    "DataFilterComponent": {
+      "path": "lfx.src.lfx.components.processing.filter_data_values",
+      "description": "Langflow component for DataFilte",
+      "author": "Langflow",
+      "display_name": "Filter Values"
+    },
+    "DataFrameOperationsComponent": {
+      "path": "lfx.src.lfx.components.processing.dataframe_operations",
+      "description": "Perform various operations on a DataFrame.",
+      "author": "Langflow",
+      "display_name": "DataFrame Operations"
+    },
+    "DataFrameToToolsetComponent": {
+      "path": "lfx.src.lfx.components.processing.dataframe_to_toolset",
+      "description": "Convert each row of a DataFrame into a callable tool/action in a toolset.",
+      "author": "Langflow",
+      "display_name": "DataFrame to Toolset"
+    },
+    "DataOperationsComponent": {
+      "path": "lfx.src.lfx.components.processing.data_operations",
+      "description": "Perform various operations on a Data object.",
+      "author": "Langflow",
+      "display_name": "Data Operations"
+    },
+    "DataToDataFrameComponent": {
+      "path": "lfx.src.lfx.components.processing.data_to_dataframe",
+      "description": "Langflow component for DataToDataFram",
+      "author": "Langflow",
+      "display_name": "Data \u2192 DataFrame"
+    },
+    "DeepSeekModelComponent": {
+      "path": "lfx.src.lfx.components.deepseek.deepseek",
+      "description": "Generate text using DeepSeek LLMs.",
+      "author": "Langflow",
+      "display_name": "DeepSeek"
+    },
+    "DirectoryComponent": {
+      "path": "lfx.src.lfx.components.data.directory",
+      "description": "Recursively load files from a directory.",
+      "author": "Langflow",
+      "display_name": "Directory"
+    },
+    "DoclingInlineComponent": {
+      "path": "lfx.src.lfx.components.docling.docling_inline",
+      "description": "Uses Docling to process input documents running the Docling models locally.",
+      "author": "Langflow",
+      "display_name": "Docling"
+    },
+    "DoclingRemoteComponent": {
+      "path": "lfx.src.lfx.components.docling.docling_remote",
+      "description": "Uses Docling to process input documents connecting to your instance of Docling Serve.",
+      "author": "Langflow",
+      "display_name": "Docling Serve"
+    },
+    "DocumentsToDataComponent": {
+      "path": "lfx.src.lfx.components.deactivated.documents_to_data",
+      "description": "Convert LangChain Documents into Data.",
+      "author": "Langflow",
+      "display_name": "Documents \u21e2 Data"
+    },
+    "Dotenv": {
+      "path": "lfx.src.lfx.components.datastax.dotenv",
+      "description": "Load .env file into env vars",
+      "author": "Langflow",
+      "display_name": "Dotenv"
+    },
+    "DuckDuckGoSearchComponent": {
+      "path": "lfx.src.lfx.components.duckduckgo.duck_duck_go_search_run",
+      "description": "Search the web using DuckDuckGo with customizable result limits",
+      "author": "Langflow",
+      "display_name": "DuckDuckGo Search"
+    },
+    "DynamicCreateDataComponent": {
+      "path": "lfx.src.lfx.components.processing.dynamic_create_data",
+      "description": "Dynamically create a Data with a specified number of fields.",
+      "author": "Langflow",
+      "display_name": "Input Configuration"
+    },
+    "ElasticsearchVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.elastic.elasticsearch",
+      "description": "Elasticsearch Vector Store with with advanced, customizable search capabilities.",
+      "author": "Langflow",
+      "display_name": "Elasticsearch URL"
+    },
+    "EmbedComponent": {
+      "path": "lfx.src.lfx.components.deactivated.embed",
+      "description": "Langflow component for Embe",
+      "author": "Langflow",
+      "display_name": "Embed Texts"
+    },
+    "EmbeddingModelComponent": {
+      "path": "lfx.src.lfx.components.models.embedding_model",
+      "description": "Generate embeddings using a specified provider.",
+      "author": "Langflow",
+      "display_name": "Embedding Model"
+    },
+    "EmbeddingSimilarityComponent": {
+      "path": "lfx.src.lfx.components.embeddings.similarity",
+      "description": "Compute selected form of similarity between two embedding vectors.",
+      "author": "Langflow",
+      "display_name": "Embedding Vectors"
+    },
+    "ExaSearchToolkit": {
+      "path": "lfx.src.lfx.components.exa.exa_search",
+      "description": "Exa Search toolkit for search and content retrieval",
+      "author": "Langflow",
+      "display_name": "Exa Search"
+    },
+    "ExportDoclingDocumentComponent": {
+      "path": "lfx.src.lfx.components.docling.export_docling_document",
+      "description": "Export DoclingDocument to markdown, html or other formats.",
+      "author": "Langflow",
+      "display_name": "Data or DataFrame"
+    },
+    "ExtractDataKeyComponent": {
+      "path": "lfx.src.lfx.components.processing.extract_key",
+      "description": "Langflow component for ExtractDataKe",
+      "author": "Langflow",
+      "display_name": "Extract Key"
+    },
+    "ExtractKeyFromDataComponent": {
+      "path": "lfx.src.lfx.components.deactivated.extract_key_from_data",
+      "description": "Extracts a key from a data.",
+      "author": "Langflow",
+      "display_name": "Extract Key From Data"
+    },
+    "FaissVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.FAISS.faiss",
+      "description": "FAISS Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Index Name"
+    },
+    "FakeEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.fake_embeddings",
+      "description": "Generate fake embeddings, useful for initial testing and connecting components.",
+      "author": "Langflow",
+      "display_name": "Fake Embeddings"
+    },
+    "FileComponent": {
+      "path": "lfx.src.lfx.components.data.file",
+      "description": "Loads content from one or more files.",
+      "author": "Langflow",
+      "display_name": "Read File"
+    },
+    "FilterDataComponent": {
+      "path": "lfx.src.lfx.components.processing.filter_data",
+      "description": "Filters a Data object based on a list of keys.",
+      "author": "Langflow",
+      "display_name": "Filter Data"
+    },
+    "FirecrawlCrawlApi": {
+      "path": "lfx.src.lfx.components.firecrawl.firecrawl_crawl_api",
+      "description": "Crawls a URL and returns the results.",
+      "author": "Langflow",
+      "display_name": "Firecrawl API Key"
+    },
+    "FirecrawlExtractApi": {
+      "path": "lfx.src.lfx.components.firecrawl.firecrawl_extract_api",
+      "description": "Extracts data from a URL.",
+      "author": "Langflow",
+      "display_name": "Firecrawl API Key"
+    },
+    "FirecrawlMapApi": {
+      "path": "lfx.src.lfx.components.firecrawl.firecrawl_map_api",
+      "description": "Maps a URL and returns the results.",
+      "author": "Langflow",
+      "display_name": "Firecrawl API Key"
+    },
+    "FirecrawlScrapeApi": {
+      "path": "lfx.src.lfx.components.firecrawl.firecrawl_scrape_api",
+      "description": "Scrapes a URL and returns the results.",
+      "author": "Langflow",
+      "display_name": "Firecrawl API Key"
+    },
+    "FlowToolComponent": {
+      "path": "lfx.src.lfx.components.logic.flow_tool",
+      "description": "Construct a Tool from a function that runs the loaded Flow.",
+      "author": "Langflow",
+      "display_name": "Flow as Tool"
+    },
+    "GetEnvVar": {
+      "path": "lfx.src.lfx.components.datastax.getenvvar",
+      "description": "Gets the value of an environment variable from the system.",
+      "author": "Langflow",
+      "display_name": "Get Environment Variable"
+    },
+    "GitExtractorComponent": {
+      "path": "lfx.src.lfx.components.git.gitextractor",
+      "description": "Analyzes a Git repository and returns file contents and complete repository information",
+      "author": "Langflow",
+      "display_name": "GitExtractor"
+    },
+    "GitLoaderComponent": {
+      "path": "lfx.src.lfx.components.git.git",
+      "description": "Langflow component for GitLoade",
+      "author": "Langflow",
+      "display_name": "Git"
+    },
+    "GleanSearchAPIComponent": {
+      "path": "lfx.src.lfx.components.glean.glean_search_api",
+      "description": "Search Glean for relevant results.",
+      "author": "Langflow",
+      "display_name": "DataFrame"
+    },
+    "GmailLoaderComponent": {
+      "path": "lfx.src.lfx.components.google.gmail",
+      "description": "Loads emails from Gmail using provided credentials.",
+      "author": "Langflow",
+      "display_name": "Gmail Loader"
+    },
+    "GoogleDriveComponent": {
+      "path": "lfx.src.lfx.components.google.google_drive",
+      "description": "Loads documents from Google Drive using provided credentials.",
+      "author": "Langflow",
+      "display_name": "Google Drive Loader"
+    },
+    "GoogleDriveSearchComponent": {
+      "path": "lfx.src.lfx.components.google.google_drive_search",
+      "description": "Searches Google Drive files using provided credentials and query parameters.",
+      "author": "Langflow",
+      "display_name": "Google Drive Search"
+    },
+    "GoogleGenerativeAIComponent": {
+      "path": "lfx.src.lfx.components.google.google_generative_ai",
+      "description": "Generate text using Google Generative AI.",
+      "author": "Langflow",
+      "display_name": "Google Generative AI"
+    },
+    "GoogleGenerativeAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.google.google_generative_ai_embeddings",
+      "description": "Langflow component for GoogleGenerativeAIEmbedding",
+      "author": "Langflow",
+      "display_name": "Google Generative AI Embeddings"
+    },
+    "GoogleOAuthToken": {
+      "path": "lfx.src.lfx.components.google.google_oauth_token",
+      "description": "Generates a JSON string with your Google OAuth token.",
+      "author": "Langflow",
+      "display_name": "Google OAuth Token"
+    },
+    "GoogleSearchAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.google_search_api",
+      "description": "Call Google Search API.",
+      "author": "Langflow",
+      "display_name": "Google Search API [DEPRECATED]"
+    },
+    "GoogleSearchAPICore": {
+      "path": "lfx.src.lfx.components.google.google_search_api_core",
+      "description": "Call Google Search API and return results as a DataFrame.",
+      "author": "Langflow",
+      "display_name": "Google Search API"
+    },
+    "GoogleSerperAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.google_serper_api",
+      "description": "Call the Serper.dev Google Search API.",
+      "author": "Langflow",
+      "display_name": "Google Serper API [DEPRECATED]"
+    },
+    "GoogleSerperAPICore": {
+      "path": "lfx.src.lfx.components.google.google_serper_api_core",
+      "description": "Call the Serper.dev Google Search API.",
+      "author": "Langflow",
+      "display_name": "Google Serper API"
+    },
+    "GraphRAGComponent": {
+      "path": "lfx.src.lfx.components.datastax.graph_rag",
+      "description": "Graph RAG traversal for vector store.",
+      "author": "Langflow",
+      "display_name": "Embedding Model"
+    },
+    "GroqModel": {
+      "path": "lfx.src.lfx.components.groq.groq",
+      "description": "Generate text using Groq.",
+      "author": "Langflow",
+      "display_name": "Groq API Key"
+    },
+    "HCDVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.datastax.hcd",
+      "description": "Implementation of Vector Store using Hyper-Converged Database (HCD) with search capabilities",
+      "author": "Langflow",
+      "display_name": "Collection Name"
+    },
+    "HierarchicalCrewComponent": {
+      "path": "lfx.src.lfx.components.crewai.hierarchical_crew",
+      "description": "Langflow component for HierarchicalCre",
+      "author": "Langflow",
+      "display_name": "Agents"
+    },
+    "HierarchicalTaskComponent": {
+      "path": "lfx.src.lfx.components.crewai.hierarchical_task",
+      "description": "Each task must have a description, an expected output and an agent responsible for execution.",
+      "author": "Langflow",
+      "display_name": "Description"
+    },
+    "HomeAssistantControl": {
+      "path": "lfx.src.lfx.components.homeassistant.home_assistant_control",
+      "description": "Home Assistant service name. (One of turn_on, turn_off, toggle)",
+      "author": "Langflow",
+      "display_name": "Home Assistant Token"
+    },
+    "HtmlLinkExtractorComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.html_link_extractor",
+      "description": "Extract hyperlinks from HTML content.",
+      "author": "Langflow",
+      "display_name": "HTML Link Extractor"
+    },
+    "HuggingFaceEndpointsComponent": {
+      "path": "lfx.src.lfx.components.huggingface.huggingface",
+      "description": "Generate text using Hugging Face Inference APIs.",
+      "author": "Langflow",
+      "display_name": "Model ID"
+    },
+    "HuggingFaceInferenceAPIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.huggingface.huggingface_inference_api",
+      "description": "Generate embeddings using Hugging Face Text Embeddings Inference (TEI)",
+      "author": "Langflow",
+      "display_name": "Hugging Face Embeddings Inference"
+    },
+    "IDGeneratorComponent": {
+      "path": "lfx.src.lfx.components.helpers.id_generator",
+      "description": "Generates a unique ID.",
+      "author": "Langflow",
+      "display_name": "ID Generator"
+    },
+    "JSONCleaner": {
+      "path": "lfx.src.lfx.components.processing.json_cleaner",
+      "description": "Langflow component for JSONCleaner",
+      "author": "Langflow",
+      "display_name": "JSON Cleaner"
+    },
+    "JSONDocumentBuilder": {
+      "path": "lfx.src.lfx.components.deactivated.json_document_builder",
+      "description": "Build a Document containing a JSON object using a key and another Document page content.",
+      "author": "Langflow",
+      "display_name": "Key"
+    },
+    "JSONToDataComponent": {
+      "path": "lfx.src.lfx.components.data.json_to_data",
+      "description": "Langflow component for JSONToDat",
+      "author": "Langflow",
+      "display_name": "Load JSON"
+    },
+    "JigsawStackAIScraperComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.ai_scrape",
+      "description": "Scrape any website instantly and get consistent structured data \\\n        in seconds without writing any css selector code",
+      "author": "Langflow",
+      "display_name": "AI Scraper"
+    },
+    "JigsawStackAIWebSearchComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.ai_web_search",
+      "description": "Effortlessly search the Web and get access to high-quality results powered with AI.",
+      "author": "Langflow",
+      "display_name": "AI Web Search"
+    },
+    "JigsawStackFileReadComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.file_read",
+      "description": "Read any previously uploaded file seamlessly from \\\n        JigsawStack File Storage and use it in your AI applications.",
+      "author": "Langflow",
+      "display_name": "File Read"
+    },
+    "JigsawStackFileUploadComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.file_upload",
+      "description": "Store any file seamlessly on JigsawStack File Storage and use it in your AI applications. \\\n        Supports various file types including images, documents, and more.",
+      "author": "Langflow",
+      "display_name": "File Upload"
+    },
+    "JigsawStackImageGenerationComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.image_generation",
+      "description": "Generate an image based on the given text by employing AI models like Flux, \\\n        Stable Diffusion, and other top models.",
+      "author": "Langflow",
+      "display_name": "Image Generation"
+    },
+    "JigsawStackNSFWComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.nsfw",
+      "description": "Detect if image/video contains NSFW content",
+      "author": "Langflow",
+      "display_name": "NSFW Detection"
+    },
+    "JigsawStackObjectDetectionComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.object_detection",
+      "description": "Perform object detection on images using JigsawStack",
+      "author": "Langflow",
+      "display_name": "Object Detection"
+    },
+    "JigsawStackSentimentComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.sentiment",
+      "description": "Analyze sentiment of text using JigsawStack AI",
+      "author": "Langflow",
+      "display_name": "Sentiment Analysis"
+    },
+    "JigsawStackTextToSQLComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.text_to_sql",
+      "description": "Convert natural language to SQL queries using JigsawStack AI",
+      "author": "Langflow",
+      "display_name": "Text to SQL"
+    },
+    "JigsawStackTextTranslateComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.text_translate",
+      "description": "Translate text from one language to another with support for multiple text formats.",
+      "author": "Langflow",
+      "display_name": "Text Translate"
+    },
+    "JigsawStackVOCRComponent": {
+      "path": "lfx.src.lfx.components.jigsawstack.vocr",
+      "description": "Extract data from any document type in a consistent structure with fine-tuned \\\n        vLLMs for the highest accuracy",
+      "author": "Langflow",
+      "display_name": "VOCR"
+    },
+    "JsonAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.json_agent",
+      "description": "Construct a json agent from an LLM and tools.",
+      "author": "Langflow",
+      "display_name": "JsonAgent"
+    },
+    "KnowledgeIngestionComponent": {
+      "path": "lfx.src.lfx.components.knowledge_bases.ingestion",
+      "description": "Create or update knowledge in Langflow.",
+      "author": "Langflow",
+      "display_name": "Knowledge Ingestion"
+    },
+    "KnowledgeRetrievalComponent": {
+      "path": "lfx.src.lfx.components.knowledge_bases.retrieval",
+      "description": "Search and retrieve data from knowledge.",
+      "author": "Langflow",
+      "display_name": "Knowledge Retrieval"
+    },
+    "LLMCheckerChainComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.llm_checker",
+      "description": "Chain for question-answering with self-verification.",
+      "author": "Langflow",
+      "display_name": "LLMCheckerChain"
+    },
+    "LLMMathChainComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.llm_math",
+      "description": "Chain that interprets a prompt and executes python code to do math.",
+      "author": "Langflow",
+      "display_name": "LLMMathChain"
+    },
+    "LLMRouterComponent": {
+      "path": "lfx.src.lfx.components.processing.llm_router",
+      "description": "Routes the input to the most appropriate LLM based on OpenRouter model specifications",
+      "author": "Langflow",
+      "display_name": "LLM Router"
+    },
+    "LMStudioEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.lmstudio.lmstudioembeddings",
+      "description": "Generate embeddings using LM Studio.",
+      "author": "Langflow",
+      "display_name": "Model"
+    },
+    "LMStudioModelComponent": {
+      "path": "lfx.src.lfx.components.lmstudio.lmstudiomodel",
+      "description": "Generate text using LM Studio Local LLMs.",
+      "author": "Langflow",
+      "display_name": "LM Studio"
+    },
+    "LambdaFilterComponent": {
+      "path": "lfx.src.lfx.components.processing.lambda_filter",
+      "description": "Uses an LLM to generate a function for filtering or transforming structured data.",
+      "author": "Langflow",
+      "display_name": "Smart Transform"
+    },
+    "LangChainHubPromptComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.langchain_hub",
+      "description": "Prompt Component that uses LangChain Hub prompts",
+      "author": "Langflow",
+      "display_name": "LangChain API Key"
+    },
+    "LangWatchComponent": {
+      "path": "lfx.src.lfx.components.langwatch.langwatch",
+      "description": "Evaluates various aspects of language models using LangWatch",
+      "author": "Langflow",
+      "display_name": "Evaluator Name"
+    },
+    "LanguageModelComponent": {
+      "path": "lfx.src.lfx.components.models.language_model",
+      "description": "Runs a language model given a specified provider.",
+      "author": "Langflow",
+      "display_name": "Language Model"
+    },
+    "LanguageRecursiveTextSplitterComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.language_recursive",
+      "description": "Split text into chunks of a specified length based on language.",
+      "author": "Langflow",
+      "display_name": "Chunk Size"
+    },
+    "ListFlowsComponent": {
+      "path": "lfx.src.lfx.components.deactivated.list_flows",
+      "description": "A component to list all available flows.",
+      "author": "Langflow",
+      "display_name": "List Flows"
+    },
+    "ListHomeAssistantStates": {
+      "path": "lfx.src.lfx.components.homeassistant.list_home_assistant_states",
+      "description": "Filter domain (e.g.,",
+      "author": "Langflow",
+      "display_name": "Home Assistant Token"
+    },
+    "ListenComponent": {
+      "path": "lfx.src.lfx.components.logic.listen",
+      "description": "A component to listen for a notification.",
+      "author": "Langflow",
+      "display_name": "Listen"
+    },
+    "LocalDBComponent": {
+      "path": "lfx.src.lfx.components.vectorstores.local_db",
+      "description": "Local Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Mode"
+    },
+    "LoopComponent": {
+      "path": "lfx.src.lfx.components.logic.loop",
+      "description": "Langflow component for Loo",
+      "author": "Langflow",
+      "display_name": "Loop"
+    },
+    "MCPSse": {
+      "path": "lfx.src.lfx.components.deactivated.mcp_sse",
+      "description": "Connects to an MCP server over SSE and exposes it",
+      "author": "Langflow",
+      "display_name": "MCP Tools (SSE) [DEPRECATED]"
+    },
+    "MCPStdio": {
+      "path": "lfx.src.lfx.components.deactivated.mcp_stdio",
+      "description": "Langflow component for MCPStdio",
+      "author": "Langflow",
+      "display_name": "MCP Tools (stdio) [DEPRECATED]"
+    },
+    "MCPToolsComponent": {
+      "path": "lfx.src.lfx.components.agents.mcp_component",
+      "description": "Connect to an MCP server to use its tools.",
+      "author": "Langflow",
+      "display_name": "MCP Tools"
+    },
+    "MaritalkModelComponent": {
+      "path": "lfx.src.lfx.components.maritalk.maritalk",
+      "description": "Generates text using MariTalk LLMs.",
+      "author": "Langflow",
+      "display_name": "MariTalk"
+    },
+    "Mem0MemoryComponent": {
+      "path": "lfx.src.lfx.components.mem0.mem0_chat_memory",
+      "description": "Retrieves and stores chat messages using Mem0 memory storage.",
+      "author": "Langflow",
+      "display_name": "Mem0 Chat Memory"
+    },
+    "MemoryComponent": {
+      "path": "lfx.src.lfx.components.helpers.memory",
+      "description": "Stores or retrieves stored chat messages from Langflow tables or an external memory.",
+      "author": "Langflow",
+      "display_name": "Message History"
+    },
+    "MergeDataComponent": {
+      "path": "lfx.src.lfx.components.processing.merge_data",
+      "description": "Combines data using different operations",
+      "author": "Langflow",
+      "display_name": "Combine Data"
+    },
+    "MessageComponent": {
+      "path": "lfx.src.lfx.components.deactivated.message",
+      "description": "Creates a Message object given a Session ID.",
+      "author": "Langflow",
+      "display_name": "Message"
+    },
+    "MessageStoreComponent": {
+      "path": "lfx.src.lfx.components.helpers.store_message",
+      "description": "Stores a chat message or text into Langflow tables or an external memory.",
+      "author": "Langflow",
+      "display_name": "Message Store"
+    },
+    "MessageToDataComponent": {
+      "path": "lfx.src.lfx.components.processing.message_to_data",
+      "description": "Convert a Message object to a Data object",
+      "author": "Langflow",
+      "display_name": "Message to Data"
+    },
+    "MetalRetrieverComponent": {
+      "path": "lfx.src.lfx.components.deactivated.metal",
+      "description": "Retriever that uses the Metal API.",
+      "author": "Langflow",
+      "display_name": "Metal Retriever API Key"
+    },
+    "MilvusVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.milvus.milvus",
+      "description": "Milvus vector store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Collection Name"
+    },
+    "MistralAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.mistral.mistral_embeddings",
+      "description": "Generate embeddings using MistralAI models.",
+      "author": "Langflow",
+      "display_name": "MistralAI Embeddings"
+    },
+    "MistralAIModelComponent": {
+      "path": "lfx.src.lfx.components.mistral.mistral",
+      "description": "Generates text using MistralAI LLMs.",
+      "author": "Langflow",
+      "display_name": "MistralAI"
+    },
+    "MockDataGeneratorComponent": {
+      "path": "lfx.src.lfx.components.data.mock_data",
+      "description": "Generate mock data for testing and development.",
+      "author": "Langflow",
+      "display_name": "Mock Data"
+    },
+    "MongoVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.mongodb.mongodb_atlas",
+      "description": "MongoDB Atlas Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "MongoDB Atlas"
+    },
+    "MultiQueryRetrieverComponent": {
+      "path": "lfx.src.lfx.components.deactivated.multi_query",
+      "description": "Initialize from llm using default template.",
+      "author": "Langflow",
+      "display_name": "MultiQueryRetriever"
+    },
+    "NVIDIAEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.nvidia.nvidia_embedding",
+      "description": "Generate embeddings using NVIDIA models.",
+      "author": "Langflow",
+      "display_name": "Model"
+    },
+    "NVIDIAModelComponent": {
+      "path": "lfx.src.lfx.components.nvidia.nvidia",
+      "description": "Generates text using NVIDIA LLMs.",
+      "author": "Langflow",
+      "display_name": "NVIDIA"
+    },
+    "NaturalLanguageTextSplitterComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.natural_language",
+      "description": "Split text based on natural language boundaries, optimized for a specified language.",
+      "author": "Langflow",
+      "display_name": "Natural Language Text Splitter"
+    },
+    "NeedleComponent": {
+      "path": "lfx.src.lfx.components.needle.needle",
+      "description": "A retriever that uses the Needle API to search collections.",
+      "author": "Langflow",
+      "display_name": "Needle Retriever"
+    },
+    "NewsSearchComponent": {
+      "path": "lfx.src.lfx.components.data.news_search",
+      "description": "Searches Google News via RSS. Returns clean article data.",
+      "author": "Langflow",
+      "display_name": "News Search"
+    },
+    "NotDiamondComponent": {
+      "path": "lfx.src.lfx.components.notdiamond.notdiamond",
+      "description": "Call the right model at the right time with the world",
+      "author": "Langflow",
+      "display_name": "Not Diamond Router"
+    },
+    "NotifyComponent": {
+      "path": "lfx.src.lfx.components.logic.notify",
+      "description": "A component to generate a notification to Get Notified component.",
+      "author": "Langflow",
+      "display_name": "Notify"
+    },
+    "NotionDatabaseProperties": {
+      "path": "lfx.src.lfx.components.Notion.list_database_properties",
+      "description": "Retrieve properties of a Notion database.",
+      "author": "Langflow",
+      "display_name": "Database ID"
+    },
+    "NotionListPages": {
+      "path": "lfx.src.lfx.components.Notion.list_pages",
+      "description": "The ID of the Notion database to query.",
+      "author": "Langflow",
+      "display_name": "Notion Secret"
+    },
+    "NotionPageContent": {
+      "path": "lfx.src.lfx.components.Notion.page_content_viewer",
+      "description": "Retrieve the content of a Notion page as plain text.",
+      "author": "Langflow",
+      "display_name": "Page Content Viewer"
+    },
+    "NotionPageCreator": {
+      "path": "lfx.src.lfx.components.Notion.create_page",
+      "description": "A component for creating Notion pages.",
+      "author": "Langflow",
+      "display_name": "Database ID"
+    },
+    "NotionPageUpdate": {
+      "path": "lfx.src.lfx.components.Notion.update_page_property",
+      "description": "Update the properties of a Notion page.",
+      "author": "Langflow",
+      "display_name": "Page ID"
+    },
+    "NotionSearch": {
+      "path": "lfx.src.lfx.components.Notion.search",
+      "description": "Searches all pages and databases that have been shared with an integration.",
+      "author": "Langflow",
+      "display_name": "Notion Secret"
+    },
+    "NotionUserList": {
+      "path": "lfx.src.lfx.components.Notion.list_users",
+      "description": "Retrieve users from Notion.",
+      "author": "Langflow",
+      "display_name": "List Users"
+    },
+    "NovitaModelComponent": {
+      "path": "lfx.src.lfx.components.novita.novita",
+      "description": "Generates text using Novita AI LLMs (OpenAI compatible).",
+      "author": "Langflow",
+      "display_name": "Novita AI"
+    },
+    "NvidiaIngestComponent": {
+      "path": "lfx.src.lfx.components.nvidia.nvidia_ingest",
+      "description": "Multi-modal data extraction from documents using NVIDIA",
+      "author": "Langflow",
+      "display_name": "NVIDIA Retriever Extraction"
+    },
+    "NvidiaRerankComponent": {
+      "path": "lfx.src.lfx.components.nvidia.nvidia_rerank",
+      "description": "Rerank documents using the NVIDIA API.",
+      "author": "Langflow",
+      "display_name": "NVIDIA Rerank"
+    },
+    "NvidiaSystemAssistComponent": {
+      "path": "lfx.src.lfx.components.nvidia.system_assist",
+      "description": "Langflow component for NvidiaSystemAssis",
+      "author": "Langflow",
+      "display_name": "NVIDIA System-Assist"
+    },
+    "OlivyaComponent": {
+      "path": "lfx.src.lfx.components.olivya.olivya",
+      "description": "A component to create an outbound call request from Olivya",
+      "author": "Langflow",
+      "display_name": "Place Call"
+    },
+    "OllamaEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.ollama.ollama_embeddings",
+      "description": "Generate embeddings using Ollama models.",
+      "author": "Langflow",
+      "display_name": "Ollama Model"
+    },
+    "OpenAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.openai.openai",
+      "description": "Generate embeddings using OpenAI models.",
+      "author": "Langflow",
+      "display_name": "OpenAI Embeddings"
+    },
+    "OpenAIModelComponent": {
+      "path": "lfx.src.lfx.components.openai.openai_chat_model",
+      "description": "Generates text using OpenAI LLMs.",
+      "author": "Langflow",
+      "display_name": "OpenAI"
+    },
+    "OpenAIToolsAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.openai_tools",
+      "description": "Agent that uses tools via openai-tools.",
+      "author": "Langflow",
+      "display_name": "Language Model"
+    },
+    "OpenAPIAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.openapi",
+      "description": "Agent to interact with OpenAPI API.",
+      "author": "Langflow",
+      "display_name": "OpenAPI Agent"
+    },
+    "OpenRouterComponent": {
+      "path": "lfx.src.lfx.components.openrouter.openrouter",
+      "description": "Langflow component for OpenRoute",
+      "author": "Langflow",
+      "display_name": "OpenRouter"
+    },
+    "OpenSearchVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.elastic.opensearch",
+      "description": "Langflow component for OpenSearchVectorStor",
+      "author": "Langflow",
+      "display_name": "Document Metadata"
+    },
+    "OutputParserComponent": {
+      "path": "lfx.src.lfx.components.helpers.output_parser",
+      "description": "Transforms the output of an LLM into a specified format.",
+      "author": "Langflow",
+      "display_name": "Output Parser"
+    },
+    "PGVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.pgvector.pgvector",
+      "description": "PGVector Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "PGVector"
+    },
+    "ParseDataComponent": {
+      "path": "lfx.src.lfx.components.processing.parse_data",
+      "description": "Convert Data objects into Messages using any {field_name} from input data.",
+      "author": "Langflow",
+      "display_name": "Data to Message"
+    },
+    "ParseDataFrameComponent": {
+      "path": "lfx.src.lfx.components.processing.parse_dataframe",
+      "description": "Langflow component for ParseDataFram",
+      "author": "Langflow",
+      "display_name": "Parse DataFrame"
+    },
+    "ParseJSONDataComponent": {
+      "path": "lfx.src.lfx.components.processing.parse_json_data",
+      "description": "Convert and extract JSON fields.",
+      "author": "Langflow",
+      "display_name": "Parse JSON"
+    },
+    "ParserComponent": {
+      "path": "lfx.src.lfx.components.processing.parser",
+      "description": "Extracts text using a template.",
+      "author": "Langflow",
+      "display_name": "Parser"
+    },
+    "PassMessageComponent": {
+      "path": "lfx.src.lfx.components.logic.pass_message",
+      "description": "Forwards the input message, unchanged.",
+      "author": "Langflow",
+      "display_name": "Pass"
+    },
+    "PegasusIndexVideo": {
+      "path": "lfx.src.lfx.components.twelvelabs.pegasus_index",
+      "description": "Index videos using TwelveLabs and add the video_id to metadata.",
+      "author": "Langflow",
+      "display_name": "TwelveLabs Pegasus Index Video"
+    },
+    "PerplexityComponent": {
+      "path": "lfx.src.lfx.components.perplexity.perplexity",
+      "description": "Generate text using Perplexity LLMs.",
+      "author": "Langflow",
+      "display_name": "Perplexity"
+    },
+    "PineconeVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.pinecone.pinecone",
+      "description": "Pinecone Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Pinecone"
+    },
+    "PromptComponent": {
+      "path": "lfx.src.lfx.components.processing.prompt",
+      "description": "Create a prompt template with dynamic variables.",
+      "author": "Langflow",
+      "display_name": "Template"
+    },
+    "PythonCodeStructuredTool": {
+      "path": "lfx.src.lfx.components.tools.python_code_structured_tool",
+      "description": "structuredtool dataclass code to tool",
+      "author": "Langflow",
+      "display_name": "Python Code Structured"
+    },
+    "PythonFunctionComponent": {
+      "path": "lfx.src.lfx.components.prototypes.python_function",
+      "description": "Define and execute a Python function that returns a Data object or a Message.",
+      "author": "Langflow",
+      "display_name": "Python Function"
+    },
+    "PythonREPLComponent": {
+      "path": "lfx.src.lfx.components.processing.python_repl_core",
+      "description": "Run Python code with optional imports. Use print() to see the output.",
+      "author": "Langflow",
+      "display_name": "Python Interpreter"
+    },
+    "PythonREPLToolComponent": {
+      "path": "lfx.src.lfx.components.tools.python_repl",
+      "description": "A tool for running Python code in a REPL environment.",
+      "author": "Langflow",
+      "display_name": "Python REPL"
+    },
+    "QdrantVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.qdrant.qdrant",
+      "description": "Qdrant Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Qdrant"
+    },
+    "QianfanChatEndpointComponent": {
+      "path": "lfx.src.lfx.components.baidu.baidu_qianfan_chat",
+      "description": "Generate text using Baidu Qianfan LLMs.",
+      "author": "Langflow",
+      "display_name": "Model Name"
+    },
+    "RSSReaderComponent": {
+      "path": "lfx.src.lfx.components.data.rss",
+      "description": "Fetches and parses an RSS feed.",
+      "author": "Langflow",
+      "display_name": "RSS Reader"
+    },
+    "RecursiveCharacterTextSplitterComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.recursive_character",
+      "description": "Split text trying to keep all related text together.",
+      "author": "Langflow",
+      "display_name": "Chunk Size"
+    },
+    "RedisIndexChatMemory": {
+      "path": "lfx.src.lfx.components.redis.redis_chat",
+      "description": "Retrieves and store chat messages from Redis.",
+      "author": "Langflow",
+      "display_name": "Redis Chat Memory"
+    },
+    "RedisVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.redis.redis",
+      "description": "Implementation of Vector Store using Redis",
+      "author": "Langflow",
+      "display_name": "Redis Server Connection String"
+    },
+    "RegexExtractorComponent": {
+      "path": "lfx.src.lfx.components.processing.regex",
+      "description": "Extract patterns from text using regular expressions.",
+      "author": "Langflow",
+      "display_name": "Regex Extractor"
+    },
+    "RetrievalQAComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.retrieval_qa",
+      "description": "Chain for question-answering querying sources from a retriever.",
+      "author": "Langflow",
+      "display_name": "Retrieval QA"
+    },
+    "RetrieverToolComponent": {
+      "path": "lfx.src.lfx.components.deactivated.retriever",
+      "description": "Tool for interacting with retriever",
+      "author": "Langflow",
+      "display_name": "RetrieverTool"
+    },
+    "RunFlowComponent": {
+      "path": "lfx.src.lfx.components.logic.run_flow",
+      "description": "Langflow component for RunFlo",
+      "author": "Langflow",
+      "display_name": "Run Flow"
+    },
+    "RunnableExecComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.runnable_executor",
+      "description": "Execute a runnable. It will try to guess the input and output keys.",
+      "author": "Langflow",
+      "display_name": "Runnable Executor"
+    },
+    "S3BucketUploaderComponent": {
+      "path": "lfx.src.lfx.components.amazon.s3_bucket_uploader",
+      "description": "Uploads files to S3 bucket.",
+      "author": "Langflow",
+      "display_name": "S3 Bucket Uploader"
+    },
+    "SQLAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.sql",
+      "description": "Construct an SQL agent from an LLM and tools.",
+      "author": "Langflow",
+      "display_name": "SQLAgent"
+    },
+    "SQLComponent": {
+      "path": "lfx.src.lfx.components.data.sql_executor",
+      "description": "Executes SQL queries on SQLAlchemy-compatible databases.",
+      "author": "Langflow",
+      "display_name": "SQL Database"
+    },
+    "SQLDatabaseComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.sql_database",
+      "description": "SQL Database",
+      "author": "Langflow",
+      "display_name": "SQLDatabase"
+    },
+    "SQLGeneratorComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.sql_generator",
+      "description": "Generate SQL from natural language.",
+      "author": "Langflow",
+      "display_name": "Natural Language to SQL"
+    },
+    "SambaNovaComponent": {
+      "path": "lfx.src.lfx.components.sambanova.sambanova",
+      "description": "Generate text using Sambanova LLMs.",
+      "author": "Langflow",
+      "display_name": "SambaNova"
+    },
+    "SaveToFileComponent": {
+      "path": "lfx.src.lfx.components.data.save_file",
+      "description": "Save data to local file, AWS S3, or Google Drive in the selected format.",
+      "author": "Langflow",
+      "display_name": "Write File"
+    },
+    "ScrapeGraphMarkdownifyApi": {
+      "path": "lfx.src.lfx.components.scrapegraph.scrapegraph_markdownify_api",
+      "description": "Given a URL, it will return the markdownified content of the website.",
+      "author": "Langflow",
+      "display_name": "ScrapeGraph API Key"
+    },
+    "ScrapeGraphSearchApi": {
+      "path": "lfx.src.lfx.components.scrapegraph.scrapegraph_search_api",
+      "description": "Given a search prompt, it will return search results using ScrapeGraph",
+      "author": "Langflow",
+      "display_name": "ScrapeGraph API Key"
+    },
+    "ScrapeGraphSmartScraperApi": {
+      "path": "lfx.src.lfx.components.scrapegraph.scrapegraph_smart_scraper_api",
+      "description": "Given a URL, it will return the structured data of the website.",
+      "author": "Langflow",
+      "display_name": "ScrapeGraph API Key"
+    },
+    "SearXNGToolComponent": {
+      "path": "lfx.src.lfx.components.tools.searxng",
+      "description": "A component that searches for tools using SearXNG.",
+      "author": "Langflow",
+      "display_name": "SearXNG Search"
+    },
+    "SearchAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.search_api",
+      "description": "Call the searchapi.io API with result limiting",
+      "author": "Langflow",
+      "display_name": "Engine"
+    },
+    "SearchComponent": {
+      "path": "lfx.src.lfx.components.searchapi.search",
+      "description": "Calls the SearchApi API with result limiting. Supports Google, Bing and DuckDuckGo.",
+      "author": "Langflow",
+      "display_name": "Engine"
+    },
+    "SelectDataComponent": {
+      "path": "lfx.src.lfx.components.processing.select_data",
+      "description": "Select a single data from a list of data.",
+      "author": "Langflow",
+      "display_name": "Data List"
+    },
+    "SelectivePassThroughComponent": {
+      "path": "lfx.src.lfx.components.deactivated.selective_passthrough",
+      "description": "Passes the specified value if a specified condition is met.",
+      "author": "Langflow",
+      "display_name": "Selective Pass Through"
+    },
+    "SelfQueryRetrieverComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.self_query",
+      "description": "Retriever that uses a vector store and an LLM to generate the vector store queries.",
+      "author": "Langflow",
+      "display_name": "Self Query Retriever"
+    },
+    "SemanticTextSplitterComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.language_semantic",
+      "description": "Split text into semantically meaningful chunks using semantic similarity.",
+      "author": "Langflow",
+      "display_name": "Data Inputs"
+    },
+    "SequentialCrewComponent": {
+      "path": "lfx.src.lfx.components.crewai.sequential_crew",
+      "description": "Represents a group of agents with tasks that are executed sequentially.",
+      "author": "Langflow",
+      "display_name": "Tasks"
+    },
+    "SequentialTaskAgentComponent": {
+      "path": "lfx.src.lfx.components.crewai.sequential_task_agent",
+      "description": "Creates a CrewAI Task and its associated Agent.",
+      "author": "Langflow",
+      "display_name": "Sequential Task Agent"
+    },
+    "SequentialTaskComponent": {
+      "path": "lfx.src.lfx.components.crewai.sequential_task",
+      "description": "Each task must have a description, an expected output and an agent responsible for execution.",
+      "author": "Langflow",
+      "display_name": "Description"
+    },
+    "SerpAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.serp_api",
+      "description": "Call Serp Search API with result limiting",
+      "author": "Langflow",
+      "display_name": "Serp Search API"
+    },
+    "SerpComponent": {
+      "path": "lfx.src.lfx.components.serpapi.serp",
+      "description": "Call Serp Search API with result limiting",
+      "author": "Langflow",
+      "display_name": "Serp Search API"
+    },
+    "ShouldRunNextComponent": {
+      "path": "lfx.src.lfx.components.deactivated.should_run_next",
+      "description": "Determines if a vertex is runnable.",
+      "author": "Langflow",
+      "display_name": "Should Run Next"
+    },
+    "SmartRouterComponent": {
+      "path": "lfx.src.lfx.components.logic.llm_conditional_router",
+      "description": "Routes an input message using LLM-based categorization.",
+      "author": "Langflow",
+      "display_name": "Smart Router"
+    },
+    "SpiderTool": {
+      "path": "lfx.src.lfx.components.langchain_utilities.spider",
+      "description": "Spider API for web crawling and scraping.",
+      "author": "Langflow",
+      "display_name": "Spider API Key"
+    },
+    "SplitTextComponent": {
+      "path": "lfx.src.lfx.components.processing.split_text",
+      "description": "Split text into chunks based on specified criteria.",
+      "author": "Langflow",
+      "display_name": "Input"
+    },
+    "SplitVideoComponent": {
+      "path": "lfx.src.lfx.components.twelvelabs.split_video",
+      "description": "Split a video into multiple clips of specified duration.",
+      "author": "Langflow",
+      "display_name": "Split Video"
+    },
+    "StoreMessageComponent": {
+      "path": "lfx.src.lfx.components.deactivated.store_message",
+      "description": "Stores a chat message.",
+      "author": "Langflow",
+      "display_name": "Store Message"
+    },
+    "StructuredOutputComponent": {
+      "path": "lfx.src.lfx.components.processing.structured_output",
+      "description": "Uses an LLM to generate structured data. Ideal for extraction and consistency.",
+      "author": "Langflow",
+      "display_name": "Structured Output"
+    },
+    "SubFlowComponent": {
+      "path": "lfx.src.lfx.components.logic.sub_flow",
+      "description": "Generates a Component from a Flow, with all of its inputs, and",
+      "author": "Langflow",
+      "display_name": "Sub Flow"
+    },
+    "SupabaseVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.supabase.supabase",
+      "description": "Supabase Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Supabase"
+    },
+    "TavilyExtractComponent": {
+      "path": "lfx.src.lfx.components.tavily.tavily_extract",
+      "description": "Langflow component for TavilyExtrac",
+      "author": "Langflow",
+      "display_name": "Tavily Extract API"
+    },
+    "TavilySearchComponent": {
+      "path": "lfx.src.lfx.components.tavily.tavily_search",
+      "description": "Langflow component for TavilySearc",
+      "author": "Langflow",
+      "display_name": "Tavily Search API"
+    },
+    "TavilySearchToolComponent": {
+      "path": "lfx.src.lfx.components.tools.tavily_search_tool",
+      "description": "Perform a web search using the Tavily API.",
+      "author": "Langflow",
+      "display_name": "Tavily Search API"
+    },
+    "TextEmbedderComponent": {
+      "path": "lfx.src.lfx.components.embeddings.text_embedder",
+      "description": "Generate embeddings for a given message using the specified embedding model.",
+      "author": "Langflow",
+      "display_name": "Embedding Model"
+    },
+    "TextInputComponent": {
+      "path": "lfx.src.lfx.components.input_output.text",
+      "description": "Get user text inputs.",
+      "author": "Langflow",
+      "display_name": "Text Input"
+    },
+    "TextOutputComponent": {
+      "path": "lfx.src.lfx.components.input_output.text_output",
+      "description": "Sends text output via API.",
+      "author": "Langflow",
+      "display_name": "Text Output"
+    },
+    "ToolCallingAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.tool_calling",
+      "description": "An agent designed to utilize various tools seamlessly within workflows.",
+      "author": "Langflow",
+      "display_name": "Language Model"
+    },
+    "TwelveLabsPegasus": {
+      "path": "lfx.src.lfx.components.twelvelabs.twelvelabs_pegasus",
+      "description": "Chat with videos using TwelveLabs Pegasus API.",
+      "author": "Langflow",
+      "display_name": "TwelveLabs Pegasus"
+    },
+    "TwelveLabsTextEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.twelvelabs.text_embeddings",
+      "description": "Generate embeddings using TwelveLabs text embedding models.",
+      "author": "Langflow",
+      "display_name": "TwelveLabs Text Embeddings"
+    },
+    "TwelveLabsVideoEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.twelvelabs.video_embeddings",
+      "description": "Generate embeddings from videos using TwelveLabs video embedding models.",
+      "author": "Langflow",
+      "display_name": "TwelveLabs Video Embeddings"
+    },
+    "TypeConverterComponent": {
+      "path": "lfx.src.lfx.components.processing.converter",
+      "description": "Convert between different types (Message, Data, DataFrame)",
+      "author": "Langflow",
+      "display_name": "Type Convert"
+    },
+    "URLComponent": {
+      "path": "lfx.src.lfx.components.data.url",
+      "description": "Fetch content from one or more web pages, following links recursively.",
+      "author": "Langflow",
+      "display_name": "URL"
+    },
+    "UnstructuredComponent": {
+      "path": "lfx.src.lfx.components.unstructured.unstructured",
+      "description": "Langflow component for Unstructure",
+      "author": "Langflow",
+      "display_name": "Unstructured API"
+    },
+    "UpdateDataComponent": {
+      "path": "lfx.src.lfx.components.processing.update_data",
+      "description": "Dynamically update or append data with the specified fields.",
+      "author": "Langflow",
+      "display_name": "Data"
+    },
+    "UpstashVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.upstash.upstash",
+      "description": "Upstash Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Upstash"
+    },
+    "VLMRunTranscription": {
+      "path": "lfx.src.lfx.components.vlmrun.vlmrun_transcription",
+      "description": "Extract structured data from audio and video using [VLM Run AI](https://app.vlm.run)",
+      "author": "Langflow",
+      "display_name": "VLM Run Transcription"
+    },
+    "VectaraRagComponent": {
+      "path": "lfx.src.lfx.components.vectara.vectara_rag",
+      "description": "Vectara",
+      "author": "Langflow",
+      "display_name": "Vectara RAG"
+    },
+    "VectaraSelfQueryRetriverComponent": {
+      "path": "lfx.src.lfx.components.deactivated.vectara_self_query",
+      "description": "Implementation of Vectara Self Query Retriever",
+      "author": "Langflow",
+      "display_name": "Vector Store"
+    },
+    "VectaraVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.vectara.vectara",
+      "description": "Vectara Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Vectara Customer ID"
+    },
+    "VectorStoreInfoComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.vector_store_info",
+      "description": "Information about a VectorStore",
+      "author": "Langflow",
+      "display_name": "VectorStoreInfo"
+    },
+    "VectorStoreRetrieverComponent": {
+      "path": "lfx.src.lfx.components.deactivated.vector_store",
+      "description": "A vector store retriever",
+      "author": "Langflow",
+      "display_name": "VectorStore Retriever"
+    },
+    "VectorStoreRouterAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.vector_store_router",
+      "description": "Construct an agent from a Vector Store Router.",
+      "author": "Langflow",
+      "display_name": "VectorStoreRouterAgent"
+    },
+    "VertexAIEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.vertexai.vertexai_embeddings",
+      "description": "Generate embeddings using Google Cloud Vertex AI models.",
+      "author": "Langflow",
+      "display_name": "Vertex AI Embeddings"
+    },
+    "VideoFileComponent": {
+      "path": "lfx.src.lfx.components.twelvelabs.video_file",
+      "description": "Load a video file in common video formats.",
+      "author": "Langflow",
+      "display_name": "Video File"
+    },
+    "WatsonxAIComponent": {
+      "path": "lfx.src.lfx.components.ibm.watsonx",
+      "description": "Generate text using IBM watsonx.ai foundation models.",
+      "author": "Langflow",
+      "display_name": "IBM watsonx.ai"
+    },
+    "WatsonxEmbeddingsComponent": {
+      "path": "lfx.src.lfx.components.ibm.watsonx_embeddings",
+      "description": "Generate embeddings using IBM watsonx.ai models.",
+      "author": "Langflow",
+      "display_name": "IBM watsonx.ai Embeddings"
+    },
+    "WeaviateVectorStoreComponent": {
+      "path": "lfx.src.lfx.components.weaviate.weaviate",
+      "description": "Weaviate Vector Store with search capabilities",
+      "author": "Langflow",
+      "display_name": "Weaviate"
+    },
+    "WebSearchComponent": {
+      "path": "lfx.src.lfx.components.data.web_search",
+      "description": "Search the web, news, or RSS feeds.",
+      "author": "Langflow",
+      "display_name": "Web Search"
+    },
+    "WebhookComponent": {
+      "path": "lfx.src.lfx.components.data.webhook",
+      "description": "Langflow component for Webhoo",
+      "author": "Langflow",
+      "display_name": "Webhook"
+    },
+    "WikidataAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.wikidata_api",
+      "description": "Performs a search using the Wikidata API.",
+      "author": "Langflow",
+      "display_name": "Wikidata API"
+    },
+    "WikidataComponent": {
+      "path": "lfx.src.lfx.components.wikipedia.wikidata",
+      "description": "Performs a search using the Wikidata API.",
+      "author": "Langflow",
+      "display_name": "Wikidata"
+    },
+    "WikipediaAPIComponent": {
+      "path": "lfx.src.lfx.components.tools.wikipedia_api",
+      "description": "Call Wikipedia API.",
+      "author": "Langflow",
+      "display_name": "Wikipedia API"
+    },
+    "WikipediaComponent": {
+      "path": "lfx.src.lfx.components.wikipedia.wikipedia",
+      "description": "Call Wikipedia API.",
+      "author": "Langflow",
+      "display_name": "Wikipedia"
+    },
+    "WolframAlphaAPIComponent": {
+      "path": "lfx.src.lfx.components.wolframalpha.wolfram_alpha_api",
+      "description": "Answers mathematical questions.",
+      "author": "Langflow",
+      "display_name": "WolframAlpha API"
+    },
+    "XAIModelComponent": {
+      "path": "lfx.src.lfx.components.xai.xai",
+      "description": "Generates text using xAI models like Grok.",
+      "author": "Langflow",
+      "display_name": "xAI"
+    },
+    "XMLAgentComponent": {
+      "path": "lfx.src.lfx.components.langchain_utilities.xml_agent",
+      "description": "Agent that uses tools formatting instructions as xml to the Language Model.",
+      "author": "Langflow",
+      "display_name": "Language Model"
+    },
+    "YfinanceComponent": {
+      "path": "lfx.src.lfx.components.yahoosearch.yahoo",
+      "description": "The stock symbol to retrieve data for.",
+      "author": "Langflow",
+      "display_name": "Yahoo! Finance"
+    },
+    "YfinanceToolComponent": {
+      "path": "lfx.src.lfx.components.tools.yahoo_finance",
+      "description": "Access financial data and market information from Yahoo! Finance.",
+      "author": "Langflow",
+      "display_name": "Yahoo! Finance"
+    },
+    "YouTubeChannelComponent": {
+      "path": "lfx.src.lfx.components.youtube.channel",
+      "description": "Retrieves detailed information and statistics about YouTube channels as a DataFrame.",
+      "author": "Langflow",
+      "display_name": "Channel URL or ID"
+    },
+    "YouTubeCommentsComponent": {
+      "path": "lfx.src.lfx.components.youtube.comments",
+      "description": "Retrieves and analyzes comments from YouTube videos.",
+      "author": "Langflow",
+      "display_name": "Video URL"
+    },
+    "YouTubePlaylistComponent": {
+      "path": "lfx.src.lfx.components.youtube.playlist",
+      "description": "Extracts all video URLs from a YouTube playlist.",
+      "author": "Langflow",
+      "display_name": "YouTube Playlist"
+    },
+    "YouTubeSearchComponent": {
+      "path": "lfx.src.lfx.components.youtube.search",
+      "description": "Searches YouTube videos based on query.",
+      "author": "Langflow",
+      "display_name": "Search Query"
+    },
+    "YouTubeTranscriptsComponent": {
+      "path": "lfx.src.lfx.components.youtube.youtube_transcripts",
+      "description": "Extracts spoken content from YouTube videos with multiple output options.",
+      "author": "Langflow",
+      "display_name": "Video URL"
+    },
+    "YouTubeTrendingComponent": {
+      "path": "lfx.src.lfx.components.youtube.trending",
+      "description": "Retrieves trending videos from YouTube with filtering options.",
+      "author": "Langflow",
+      "display_name": "YouTube API Key"
+    },
+    "YouTubeVideoDetailsComponent": {
+      "path": "lfx.src.lfx.components.youtube.video_details",
+      "description": "Retrieves detailed information and statistics about YouTube videos.",
+      "author": "Langflow",
+      "display_name": "Video URL"
+    },
+    "ZepChatMemory": {
+      "path": "lfx.src.lfx.components.zep.zep",
+      "description": "Retrieves and store chat messages from Zep.",
+      "author": "Langflow",
+      "display_name": "Zep Chat Memory"
+    }
   }
 }
-

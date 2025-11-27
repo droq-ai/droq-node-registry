@@ -75,16 +75,46 @@ async def bootstrap_from_assets():
     """Bootstrap database from JSON files in assets/nodes directory."""
     registry_root = Path(__file__).parent.parent.parent
     assets_dir = registry_root / "assets" / "nodes"
-    
+
     if not assets_dir.exists():
         logger.warning(f"Assets directory not found: {assets_dir}")
-        return
-    
+        logger.info("Attempting to extract configurations from submodules...")
+
+        # Try to extract from submodules
+        extract_script = registry_root / "scripts" / "extract_node_configs.py"
+        if extract_script.exists():
+            import subprocess
+            import sys
+
+            try:
+                result = subprocess.run(
+                    [sys.executable, str(extract_script)],
+                    capture_output=True,
+                    text=True,
+                    timeout=60,
+                    cwd=registry_root
+                )
+                if result.returncode == 0:
+                    logger.info("Successfully extracted node configurations from submodules")
+                else:
+                    logger.error(f"Failed to extract from submodules: {result.stderr}")
+                    return
+            except subprocess.TimeoutExpired:
+                logger.error("Submodule extraction timed out")
+                return
+            except Exception as e:
+                logger.error(f"Failed to run extraction script: {e}")
+                return
+        else:
+            logger.warning("Extraction script not found at scripts/extract_node_configs.py")
+            return
+
     # Find all JSON files in assets/nodes
     json_files = list(assets_dir.glob("*.json"))
-    
+
     if not json_files:
         logger.warning(f"No JSON files found in {assets_dir}")
+        logger.info("Try running: python scripts/extract_node_configs.py")
         return
     
     logger.info(f"Bootstrapping database from {len(json_files)} node configuration files")
