@@ -42,5 +42,10 @@ export PORT="${PORT:-8002}"
 export RELOAD="${RELOAD:-true}"
 export LOG_LEVEL="${LOG_LEVEL:-info}"
 
-uv run droq-registry-service
+if [ "$RELOAD" = "true" ]; then
+    # Use import string for reload mode
+    uv run uvicorn registry.main:app --host $HOST --port $PORT --reload --log-level $LOG_LEVEL
+else
+    uv run droq-registry-service
+fi
 
