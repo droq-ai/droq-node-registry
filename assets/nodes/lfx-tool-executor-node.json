@@ -9,7 +9,7 @@
   "deployment_location": "local",
   "status": "active",
   "author": "Langflow",
-  "created_at": "2025-11-23T00:00:00Z",
+  "created_at": "2025-11-17T20:44:53Z",
   "source_code_location": "nodes/lfx-tool-executor-node",
   "components": {
     "AIMLEmbeddingsComponent": {
@@ -2094,5 +2094,7 @@
       "author": "Langflow",
       "display_name": "Zep Chat Memory"
     }
-  }
+  },
+  "commit": "98e70683dace6d3969ac0ead220600999ad3dfc3",
+  "updated_at": "2025-11-27T09:29:44Z"
 }

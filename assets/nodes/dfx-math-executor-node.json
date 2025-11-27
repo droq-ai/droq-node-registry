@@ -9,7 +9,7 @@
   "deployment_location": "local",
   "status": "active",
   "author": "Dorq",
-  "created_at": "2025-11-23T00:00:00Z",
+  "created_at": "2025-11-14T21:11:12Z",
   "source_code_location": "nodes/dfx-math-executor-node",
   "components": {
     "Multiply": {
@@ -18,5 +18,7 @@
       "display_name": "DFX Multiply",
       "author": "Dorq"
     }
-  }
+  },
+  "commit": "79cf4e67bf2c2c3a5b3f24f0cdd46bbbf6ea6471",
+  "updated_at": "2025-11-27T22:10:32Z"
 }

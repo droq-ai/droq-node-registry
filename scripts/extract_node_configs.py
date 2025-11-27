@@ -4,11 +4,60 @@ Extract node.json files from Git submodules and place them in assets/nodes/
 """
 import json
 import logging
+import subprocess
 from pathlib import Path
+from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+def get_git_commit_info(submodule_path):
+    """Get git commit information for a submodule"""
+    try:
+        # Get current commit SHA
+        result = subprocess.run(
+            ['git', 'rev-parse', 'HEAD'],
+            cwd=submodule_path,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        current_commit = result.stdout.strip()
+
+        # Get first commit timestamp (created_at)
+        result = subprocess.run(
+            ['git', 'log', '--reverse', '--format=%ct', 'HEAD'],
+            cwd=submodule_path,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        timestamps = result.stdout.strip().split('\n')
+        first_timestamp = int(timestamps[0]) if timestamps else None
+
+        # Get last commit timestamp (updated_at)
+        result = subprocess.run(
+            ['git', 'log', '-1', '--format=%ct', 'HEAD'],
+            cwd=submodule_path,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        last_timestamp = int(result.stdout.strip())
+
+        return {
+            'commit': current_commit,
+            'created_at': datetime.fromtimestamp(first_timestamp).isoformat() + 'Z' if first_timestamp else None,
+            'updated_at': datetime.fromtimestamp(last_timestamp).isoformat() + 'Z'
+        }
+    except subprocess.CalledProcessError as e:
+        logger.warning(f"Failed to get git info for {submodule_path}: {e}")
+        return {
+            'commit': None,
+            'created_at': None,
+            'updated_at': None
+        }
 
 def extract_node_configs():
     """Extract node.json from each submodule to assets/nodes/"""
@@ -65,6 +114,17 @@ def extract_node_configs():
 
             # Update source_code_location to point to submodule
             node_config['source_code_location'] = str(submodule_dir.relative_to(registry_root))
+
+            # Get git commit information
+            git_info = get_git_commit_info(submodule_dir)
+
+            # Add git information to node config
+            if git_info['commit']:
+                node_config['commit'] = git_info['commit']
+            if git_info['created_at']:
+                node_config['created_at'] = git_info['created_at']
+            if git_info['updated_at']:
+                node_config['updated_at'] = git_info['updated_at']
 
             # Check for node_id conflicts and use submodule directory name as filename
             output_filename = f"{node_id}.json"
