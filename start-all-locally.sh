@@ -7,23 +7,25 @@ echo "🚀 Starting Droq Ecosystem - All Services"
 echo "=========================================="
 echo ""
 
+# Global variables for tracking services
+ALL_PORTS=()
+ALL_PIDS=()
+
 # Function to cleanup background processes
 cleanup() {
     echo ""
     echo "🛑 Shutting down all services..."
 
-    # Kill services by port (most reliable)
-    echo "  → Stopping services on ports 8000, 8003, 8005, 8002..."
-    pkill -f "localhost:8000" 2>/dev/null || true
-    pkill -f "localhost:8003" 2>/dev/null || true
-    pkill -f "localhost:8005" 2>/dev/null || true
-    pkill -f "localhost:8002" 2>/dev/null || true
+    # Kill services by discovered ports
+    if [ ${#ALL_PORTS[@]} -gt 0 ]; then
+        echo "  → Stopping services on ports: ${ALL_PORTS[*]}..."
+        for port in "${ALL_PORTS[@]}"; do
+            pkill -f "localhost:$port" 2>/dev/null || true
+        done
+    fi
 
-    # Kill by service name
-    pkill -f "droq-math-executor" 2>/dev/null || true
-    pkill -f "langflow-executor" 2>/dev/null || true
+    # Kill registry service
     pkill -f "droq-registry" 2>/dev/null || true
-    pkill -f "lfx-tool-executor" 2>/dev/null || true
 
     # Kill all background jobs from this script
     for job in $(jobs -p); do
@@ -36,7 +38,10 @@ cleanup() {
     wait 2>/dev/null || true
 
     # Final verification - force kill any remaining processes
-    lsof -ti:8000,8003,8005,8002 | xargs -r kill -9 2>/dev/null || true
+    if [ ${#ALL_PORTS[@]} -gt 0 ]; then
+        ports_str=$(IFS=,; echo "${ALL_PORTS[*]}")
+        lsof -ti:$ports_str | xargs -r kill -9 2>/dev/null || true
+    fi
 
     echo "✅ All services stopped"
     exit 0
@@ -56,46 +61,76 @@ fi
 echo "📦 Starting Node Services..."
 echo "---------------------------"
 
-# Start dfx-math-executor-node (port 8003)
-if [ -d "nodes/dfx-math-executor-node" ] && [ -f "nodes/dfx-math-executor-node/start-local.sh" ]; then
-    echo "→ Starting dfx-math-executor-node (port 8003)..."
-    cd nodes/dfx-math-executor-node
-    ./start-local.sh &
-    MATH_PID=$!
-    cd ../..
-    echo "  ✅ dfx-math-executor-node started (PID: $MATH_PID)"
+# Function to find an available port
+find_available_port() {
+    local start_port=8000
+    local end_port=8100
+
+    for ((port=$start_port; port<=$end_port; port++)); do
+        if ! lsof -ti:$port >/dev/null 2>&1; then
+            echo "$port"
+            return
+        fi
+    done
+
+    echo "8001"  # fallback if no ports available
+}
+
+# Function to extract port from a node directory
+extract_port() {
+    local node_dir="$1"
+
+    # Try to find port in common configuration files
+    for file in "$node_dir"/{start-local.sh,pyproject.toml,config.yaml,config.json,settings.py,.env}; do
+        if [ -f "$file" ]; then
+            port=$(grep -oP 'port[:\s=]+\K[0-9]+' "$file" 2>/dev/null | head -1 || true)
+            if [ -n "$port" ]; then
+                echo "$port"
+                return
+            fi
+        fi
+    done
+
+    # Find the first available port dynamically
+    find_available_port
+}
+
+# Function to start a node service
+start_node() {
+    local node_dir="$1"
+    local node_name=$(basename "$node_dir")
+
+    if [ -f "$node_dir/start-local.sh" ]; then
+        local port=$(extract_port "$node_dir")
+        ALL_PORTS+=("$port")
+
+        echo "→ Starting $node_name (port $port)..."
+        cd "$node_dir"
+        ./start-local.sh &
+        local pid=$!
+        cd ../..
+
+        ALL_PIDS+=("$pid")
+        echo "  ✅ $node_name started (PID: $pid)"
+
+        return 0
+    else
+        echo "  ⚠️  $node_name not found (missing start-local.sh)"
+        return 1
+    fi
+}
+
+# Discover and start all node services
+if [ -d "nodes" ]; then
+    for node_dir in nodes/*/; do
+        if [ -d "$node_dir" ]; then
+            start_node "$node_dir"
+            sleep 1  # Small delay between startups
+        fi
+    done
 else
-    echo "  ⚠️  dfx-math-executor-node not found"
-fi
-
-# Wait a moment for math service to start
-sleep 2
-
-# Start lfx-runtime-executor-node (port 8000)
-if [ -d "nodes/lfx-runtime-executor-node" ] && [ -f "nodes/lfx-runtime-executor-node/start-local.sh" ]; then
-    echo "→ Starting lfx-runtime-executor-node (port 8000)..."
-    cd nodes/lfx-runtime-executor-node
-    ./start-local.sh &
-    RUNTIME_PID=$!
-    cd ../..
-    echo "  ✅ lfx-runtime-executor-node started (PID: $RUNTIME_PID)"
-else
-    echo "  ⚠️  lfx-runtime-executor-node not found"
-fi
-
-# Wait a moment for runtime service to start
-sleep 3
-
-# Start lfx-tool-executor-node (port 8005)
-if [ -d "nodes/lfx-tool-executor-node" ] && [ -f "nodes/lfx-tool-executor-node/start-local.sh" ]; then
-    echo "→ Starting lfx-tool-executor-node (port 8005)..."
-    cd nodes/lfx-tool-executor-node
-    ./start-local.sh &
-    TOOL_PID=$!
-    cd ../..
-    echo "  ✅ lfx-tool-executor-node started (PID: $TOOL_PID)"
-else
-    echo "  ⚠️  lfx-tool-executor-node not found"
+    echo "❌ No nodes directory found"
+    exit 1
 fi
 
 # Wait for all node services to be ready
@@ -103,27 +138,17 @@ echo ""
 echo "⏳ Waiting for node services to be ready..."
 sleep 5
 
-# Test health endpoints
+# Test health endpoints dynamically
 echo "🏥 Checking service health..."
 echo "---------------------------"
 
-if curl -s http://localhost:8003/health > /dev/null 2>&1; then
-    echo "  ✅ dfx-math-executor-node (8003) - healthy"
-else
-    echo "  ❌ dfx-math-executor-node (8003) - not responding"
-fi
-
-if curl -s http://localhost:8000/health > /dev/null 2>&1; then
-    echo "  ✅ lfx-runtime-executor-node (8000) - healthy"
-else
-    echo "  ❌ lfx-runtime-executor-node (8000) - not responding"
-fi
-
-if curl -s http://localhost:8005/health > /dev/null 2>&1; then
-    echo "  ✅ lfx-tool-executor-node (8005) - healthy"
-else
-    echo "  ❌ lfx-tool-executor-node (8005) - not responding"
-fi
+for port in "${ALL_PORTS[@]}"; do
+    if curl -s "http://localhost:$port/health" > /dev/null 2>&1; then
+        echo "  ✅ Node (port $port) - healthy"
+    else
+        echo "  ❌ Node (port $port) - not responding"
+    fi
+done
 
 # Install/update dependencies if needed
 if [ ! -d ".venv" ] || [ ! -f "uv.lock" ]; then
@@ -131,6 +156,9 @@ if [ ! -d ".venv" ] || [ ! -f "uv.lock" ]; then
     echo "📦 Installing registry dependencies..."
     uv sync
 fi
+
+# Add registry port
+ALL_PORTS+=("8002")
 
 echo ""
 echo "🚀 Starting Registry Service..."
@@ -150,19 +178,22 @@ echo "  Log Level: $LOG_LEVEL"
 echo ""
 echo "🎉 All services are running!"
 echo "Registry: http://$HOST:$PORT"
-echo "Nodes: 8000, 8003, 8005"
+echo "Nodes: ${ALL_PORTS[*]%,8002}"  # Remove registry port from nodes list
 echo ""
 echo "Press Ctrl+C to stop all services"
 echo "================================"
 echo ""
 
 # Run the registry service in foreground
-export HOST="${HOST:-0.0.0.0}"
-export PORT="${PORT:-8002}"
-export RELOAD="${RELOAD:-true}"
-export LOG_LEVEL="${LOG_LEVEL:-info}"
+export HOST="$HOST"
+export PORT="$PORT"
+export RELOAD="$RELOAD"
+export LOG_LEVEL="$LOG_LEVEL"
 
-# Start registry service in foreground (this will be the main process)
-uv run droq-registry-service
+# Start registry service in background to track its PID
+uv run droq-registry-service &
+REGISTRY_PID=$!
 
-# This line will only be reached when the registry service stops
+# Wait for all background services to keep the script alive
+# This will wait until any service fails or Ctrl+C is pressed
+wait
