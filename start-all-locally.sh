@@ -191,7 +191,7 @@ export RELOAD="$RELOAD"
 export LOG_LEVEL="$LOG_LEVEL"
 
 # Start registry service in background to track its PID
-uv run droq-registry-service &
+./start-local.sh &
 REGISTRY_PID=$!
 
 # Wait for all background services to keep the script alive
