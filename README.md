@@ -139,84 +139,16 @@ The service uses SQLite as a key-value store. The database file (`registry.db`) 
 - `created_at`: Timestamp
 - UNIQUE constraint on (node_id, component_class)
 
-## Development
-
-### Prerequisites
-
-- Python 3.11+
-- [uv](https://github.com/astral-sh/uv) for dependency management
-- Git (for submodule operations)
-
-### Quick Start
+## Running Locally
 
 ```bash
-# Clone and setup
-git clone --recurse-submodules https://github.com/droq-ai/droq-node-registry
-cd droq-node-registry
-make setup
-
-# Start the service
-make start
+./start-local.sh
+# run all services
+./stat-all-local.sh
 ```
 
 The service will start on `http://localhost:8002`.
 
-### Development Commands
-
-```bash
-# Initial setup with submodules and dependencies
-make setup
-
-# Start the registry service locally
-make start
-
-# Extract configurations from submodules
-make extract-configs
-
-# Update submodules from remote
-make update-submodules
-
-# Update submodules and extract configurations
-make refresh
-
-# Check project status
-make status
-
-# Clean generated files
-make clean
-
-# Reset database
-make reset-db
-```
-
-### Manual Development
-
-```bash
-# Install dependencies
-uv sync
-
-# Initialize/update submodules
-git submodule update --init --recursive
-
-# Extract node configurations
-uv run python scripts/extract_node_configs.py
-
-# Start the service
-./start-local.sh
-```
-
-## Running with Docker
-
-```bash
-# Build and start
-docker compose up -d
-
-# View logs
-docker compose logs -f registry
-
-# Stop services
-docker compose down
-```
 
 ## Environment Variables
 
@@ -225,65 +157,4 @@ docker compose down
 - `LOG_LEVEL`: Logging level (default: `info`)
 - `RELOAD`: Enable auto-reload (default: `true`)
 - `REGISTRY_DB_PATH`: Path to SQLite database file (default: `registry.db`)
-
-## Directory Structure
-
-```
-droq-node-registry/
-├── nodes/                    # Git submodules (executor nodes)
-│   ├── dfx-math-executor-node/
-│   ├── lfx-runtime-executor-node/
-│   └── lfx-tool-executor-node/
-├── scripts/                  # Management scripts
-│   ├── extract_node_configs.py
-│   └── update_submodules.py
-├── assets/nodes/            # Generated configurations (auto-extracted)
-├── src/registry/            # Registry service code
-├── docker-compose.yml       # Docker configuration
-├── Makefile                # Development automation
-└── start-local.sh          # Development startup script
-```
-
-## Maintenance
-
-### Updating Existing Nodes
-
-To update an existing node to a new version:
-
-1. Update the submodule to the desired commit/tag:
-   ```bash
-   cd nodes/your-executor-node
-   git pull origin main
-   cd ../..
-   git add nodes/your-executor-node
-   git commit -m "Update your-executor-node to latest version"
-   ```
-
-2. Extract new configurations:
-   ```bash
-   make extract-configs
-   ```
-
-3. Test and deploy:
-   ```bash
-   make start
-   ```
-
-### Removing Nodes
-
-To remove a node from the registry:
-
-1. Remove the submodule:
-   ```bash
-   git submodule deinit nodes/your-executor-node
-   git rm nodes/your-executor-node
-   ```
-
-2. Commit the changes
-
-3. Clean up generated files:
-   ```bash
-   make clean
-   make extract-configs
-   ```
 

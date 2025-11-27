@@ -163,8 +163,6 @@ export RELOAD="${RELOAD:-true}"
 export LOG_LEVEL="${LOG_LEVEL:-info}"
 
 # Start registry service in foreground (this will be the main process)
-uv run droq-registry-service &
+uv run droq-registry-service
 
-# Wait for registry service
-REGISTRY_PID=$!
-wait $REGISTRY_PID
+# This line will only be reached when the registry service stops
