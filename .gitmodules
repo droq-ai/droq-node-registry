@@ -1,0 +1,12 @@
+[submodule "nodes/dfx-math-executor-node"]
+	path = nodes/dfx-math-executor-node
+	url = git@github.com:droq-ai/dfx-math-executor-node.git
+	branch = ahmed/chore/ahere-to-template
+[submodule "nodes/lfx-runtime-executor-node"]
+	path = nodes/lfx-runtime-executor-node
+	url = git@github.com:droq-ai/lfx-runtime-executor-node.git
+	branch = ahmed/chore/update-tempalte
+[submodule "nodes/lfx-tool-executor-node"]
+	path = nodes/lfx-tool-executor-node
+	url = git@github.com:droq-ai/lfx-tool-executor-node.git
+	branch = ahmed/adhere-to-template
