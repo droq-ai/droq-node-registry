@@ -1,0 +1,30 @@
+{
+  "version": "0.1.0",
+  "node_id": "dfx-base-node-template-py",
+  "name": "Droq Base Node Template",
+  "description": "A Python boilerplate template for creating new DFX nodes.",
+  "author": "Droq Team",
+  "api_url": "http://localhost:8003",
+  "created_at": "2025-11-28T10:42:44Z",
+  "ip_address": "127.0.0.1",
+  "status": "active",
+  "docker_image": "droqai/dfx-base-node-template:latest",
+  "deployment_location": "local",
+  "source_code_location": "nodes/dfx-social-node",
+  "components": {
+    "DFXExampleComponent": {
+      "path": "dfx.components.example",
+      "description": "This is a sample droq component",
+      "author": "Droq Team"
+    },
+    "social/telegram/message": {
+      "path": "social.telegram.message",
+      "description": "Statelessly send a plain text message to a Telegram chat via Bot API with caller-supplied bot token",
+      "author": "Droq Team"
+    }
+  },
+  "repository_url": "https://github.com/droq-ai/dfx-social-node",
+  "category": "droq-core",
+  "commit": "70344369ae942ba923cc871c33e472fcfb49e4c0",
+  "updated_at": "2025-11-28T14:17:10Z"
+}
