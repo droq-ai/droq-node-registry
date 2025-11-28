@@ -24,7 +24,7 @@ fi
 HOST="${HOST:-0.0.0.0}"
 PORT="${PORT:-8002}"
 RELOAD="${RELOAD:-true}"
-LOG_LEVEL="${LOG_LEVEL:-info}"
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
 
 echo "Configuration:"
 echo "  Host: $HOST"
@@ -40,7 +40,7 @@ echo ""
 export HOST="${HOST:-0.0.0.0}"
 export PORT="${PORT:-8002}"
 export RELOAD="${RELOAD:-true}"
-export LOG_LEVEL="${LOG_LEVEL:-info}"
+export LOG_LEVEL="${LOG_LEVEL:-INFO}"
 
 uv run droq-registry-service
 

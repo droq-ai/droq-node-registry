@@ -35,7 +35,7 @@ def main():
     """Main entry point - runs the FastAPI server."""
     # Setup logging
     logging.basicConfig(
-        level=os.getenv("LOG_LEVEL", "INFO"),
+        level=os.getenv("LOG_LEVEL", "INFO").upper(),
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
@@ -47,12 +47,13 @@ def main():
     logger.info(f"Starting Droq Registry Service on {host}:{port}")
 
     # Run the FastAPI server
+    app_target = "registry.api:app" if reload else app
     uvicorn.run(
-        app,
+        app_target,
         host=host,
         port=port,
         reload=reload,
-        log_level=os.getenv("LOG_LEVEL", "info").lower(),
+        log_level=os.getenv("LOG_LEVEL", "INFO").lower(),
     )
 
 

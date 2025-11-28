@@ -1,0 +1,15 @@
+{
+  "node_id": "dfx-hf-models-node",
+  "name": "DFX Hugging Face Models Node",
+  "description": "Execute Hugging Face models locally via a generic /api/v1/execute endpoint.",
+  "api_url": "http://localhost:8006",
+  "ip_address": "127.0.0.1",
+  "status": "active",
+  "docker_image": "dfx-hf-models-node:latest",
+  "deployment_location": "local",
+  "source_code_location": "../dfx-hf-models-node",
+  "components": {
+    "DFXEmbeddingsComponent": "dfx.components.minilm_embeddings",
+    "DFXExportEmbeddingsDataComponent": "dfx.components.export_embeddings_data"
+  }
+}
