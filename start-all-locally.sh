@@ -3,7 +3,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-echo "🚀 Starting Droq Ecosystem - All Services"
+echo "🚀 Starting Droqflow Nodes"
 echo "=========================================="
 echo ""
 
