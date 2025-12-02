@@ -73,7 +73,9 @@ find_available_port() {
         fi
     done
 
-    echo "8001"  # fallback if no ports available
+    echo "No available port found in range ${start_port}-${end_port}" >&2
+    return 1
+
 }
 
 # Function to extract port from a node directory
