@@ -40,7 +40,7 @@ PYTHONPATH=src uv run python -m node.main
 ```
 your-executor-node/
 ├── node.json          # Required: Node configuration
-├── src/              # Your source code
+├── src/node              # Your source code
 ├── pyproject.toml    # Python project configuration
 ├── README.md         # Node documentation
 └── Dockerfile        # (Optional) Docker configuration
@@ -61,7 +61,10 @@ your-executor-node/
   "status": "active",
   "author": "Your Name/Organization",
   "components": {
-    "ComponentName": "module.path.to.component"
+    "ComponentName": "module.path.to.component",
+    "description": "Another DFX component",
+    "display_name": "DFX component",
+    "author": "Dorq"
   }
 }
 ```
@@ -86,8 +89,17 @@ your-executor-node/
 ## Submission Process
 
 1. Create your repository on GitHub
-2. Test your node locally
-3. Submit a PR to [droq-node-registry](https://github.com/droq-ai/droq-node-registry) with:
+2. Add your node as a Git submodule in the Droqflow repo:
+```bash
+   git submodule add <gitrepo> nodes/<dfx-example-node>
+   
+   ```
+3. Generated the node.json file using the extract script:
+```bash
+python3 scripts/extract_node_configs.py
+ ```
+4. Test your node locally
+5. Submit a PR to [droq-node-registry](https://github.com/droq-ai/droq-node-registry) with:
    - Title: "Add [your-node-name] executor node"
    - Repository URL, branch/tag, and any special requirements
 
