@@ -158,7 +158,7 @@ if [ ! -d ".venv" ] || [ ! -f "uv.lock" ]; then
 fi
 
 # Add registry port
-ALL_PORTS+=("8002")
+ALL_PORTS+=("8000")
 
 echo ""
 echo "🚀 Starting Registry Service..."
@@ -166,7 +166,7 @@ echo "-------------------------------"
 
 # Get configuration from environment or use defaults
 HOST="${HOST:-0.0.0.0}"
-PORT="${PORT:-8002}"
+PORT="${PORT:-8000}"
 RELOAD="${RELOAD:-true}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 
@@ -178,7 +178,7 @@ echo "  Log Level: $LOG_LEVEL"
 echo ""
 echo "🎉 All services are running!"
 echo "Registry: http://$HOST:$PORT"
-echo "Nodes: ${ALL_PORTS[*]%,8002}"  # Remove registry port from nodes list
+echo "Nodes: ${ALL_PORTS[*]%,8000}"  # Remove registry port from nodes list
 echo ""
 echo "Press Ctrl+C to stop all services"
 echo "================================"
