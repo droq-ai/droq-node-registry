@@ -78,43 +78,13 @@ async def bootstrap_from_assets():
 
     if not assets_dir.exists():
         logger.warning(f"Assets directory not found: {assets_dir}")
-        logger.info("Attempting to extract configurations from submodules...")
-
-        # Try to extract from submodules
-        extract_script = registry_root / "scripts" / "extract_node_configs.py"
-        if extract_script.exists():
-            import subprocess
-            import sys
-
-            try:
-                result = subprocess.run(
-                    [sys.executable, str(extract_script)],
-                    capture_output=True,
-                    text=True,
-                    timeout=60,
-                    cwd=registry_root
-                )
-                if result.returncode == 0:
-                    logger.info("Successfully extracted node configurations from submodules")
-                else:
-                    logger.error(f"Failed to extract from submodules: {result.stderr}")
-                    return
-            except subprocess.TimeoutExpired:
-                logger.error("Submodule extraction timed out")
-                return
-            except Exception as e:
-                logger.error(f"Failed to run extraction script: {e}")
-                return
-        else:
-            logger.warning("Extraction script not found at scripts/extract_node_configs.py")
-            return
+        return
 
     # Find all JSON files in assets/nodes
     json_files = list(assets_dir.glob("*.json"))
 
     if not json_files:
         logger.warning(f"No JSON files found in {assets_dir}")
-        logger.info("Try running: python scripts/extract_node_configs.py")
         return
 
     logger.info(f"Bootstrapping database from {len(json_files)} node configuration files")
@@ -190,10 +160,10 @@ async def bootstrap_from_assets():
 
 async def load_components_json(components_json_path: str) -> dict[str, str]:
     """Load components.json file and return component mapping.
-    
+
     Args:
         components_json_path: Path to components.json file (relative to droq root or absolute)
-        
+
     Returns:
         Dictionary mapping component_class -> module_path
     """
@@ -259,7 +229,7 @@ async def get_node(node_id: str) -> dict[str, Any] | None:
 
 async def get_node_components(node_id: str) -> dict[str, str]:
     """Get component mapping for a specific node.
-    
+
     Returns:
         Dictionary mapping component_class -> module_path
     """
@@ -291,10 +261,10 @@ async def get_node_supported_components(node_id: str) -> list[str]:
 
 async def get_node_by_component(component_class: str) -> dict[str, Any] | None:
     """Get node information for a specific component class.
-    
+
     Args:
         component_class: Name of the component class (e.g., "TextInputComponent")
-        
+
     Returns:
         Dictionary with node metadata and component mapping, or None if not found
     """
@@ -336,4 +306,3 @@ async def get_node_by_component(component_class: str) -> dict[str, Any] | None:
         }
     finally:
         await conn.close()
-
