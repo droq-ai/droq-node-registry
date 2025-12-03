@@ -4,46 +4,35 @@ Registry service for mapping executor nodes to their supported components.
 
 ## Overview
 
-The Droq Registry Service maintains a mapping of executor nodes to their metadata and supported components. It uses a SQLite database as a key-value store, bootstrapped from JSON configuration files in the `assets/nodes/` directory.
+The Droq Registry Service maintains a mapping of executor nodes to their metadata and supported components. It uses Git submodules for node management and a SQLite database as a key-value store, automatically bootstrapped from extracted JSON configurations.
 
 ## Features
 
+- **Git Submodule Management**: Nodes managed as Git submodules under `/nodes/`
+- **Automatic Configuration Extraction**: Extracts `node.json` files from submodules to `assets/nodes/`
 - **Key-Value Store**: SQLite database for storing node metadata and component mappings
-- **Asset-Based Configuration**: Node configurations stored as JSON files in `assets/nodes/`
-- **Automatic Bootstrap**: Database is automatically initialized and populated from assets on startup
-- **Component Mapping**: Loads `components.json` from each node to know which components each node supports
+- **Automatic Bootstrap**: Database is automatically initialized and populated from extracted configurations on startup
+- **Component Mapping**: Tracks which components each node supports
 - **RESTful API**: Provides endpoints to query nodes and their components
 
 ## Architecture
 
+- **Git Submodules**: Node repositories stored in `/nodes/` directory as Git submodules
+- **Configuration Extraction**: Scripts extract `node.json` from each submodule to `assets/nodes/`
 - **Database**: SQLite (`registry.db`) with two tables:
   - `nodes`: Stores node metadata
   - `components`: Stores component mappings (component_class -> module_path) for each node
-- **Assets**: JSON files in `assets/nodes/` define node configurations
+- **Assets**: Generated JSON files in `assets/nodes/` define node configurations (auto-extracted from submodules)
 - **Bootstrap**: On startup, the service reads all JSON files from `assets/nodes/` and populates the database
 
 ## Adding a New Node
 
-1. Create a JSON file in `assets/nodes/` (e.g., `assets/nodes/droq-executor-node.json`):
-```json
-{
-  "node_id": "droq-executor-node",
-  "name": "Droq Executor Node",
-  "description": "Executor node for Droq-specific components",
-  "source_code_location": "../nodes/droq-executor-node",
-  "docker_image": "droq-executor-node:latest",
-  "deployment_location": "local",
-  "api_url": "http://localhost:8001",
-  "ip_address": "127.0.0.1",
-  "status": "active",
-  "components": {
-    "MultiplyComponent": "droq.components.math.multiply",
-    ...
-  }
-}
-```
+📖 **See [docs/node-addition-guidelines.md](docs/node-addition-guidelines.md)** for complete instructions on adding new executor nodes to the registry.
 
-2. Restart the service - it will automatically bootstrap the new node from the JSON file
+**Quick Summary:**
+- Create repository with `node.json` configuration
+- Submit PR to add as Git submodule
+- Registry automatically extracts and integrates your node
 
 ## API Endpoints
 
@@ -154,15 +143,12 @@ The service uses SQLite as a key-value store. The database file (`registry.db`) 
 
 ```bash
 ./start-local.sh
+# run all services
+./stat-all-local.sh
 ```
 
 The service will start on `http://localhost:8002`.
 
-## Running with Docker
-
-```bash
-docker compose up -d
-```
 
 ## Environment Variables
 

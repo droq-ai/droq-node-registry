@@ -33,7 +33,8 @@ app.router.lifespan_context = lifespan
 
 def main():
     """Main entry point - runs the FastAPI server."""
-    # Setup logging
+    # Setup logging - normalize LOG_LEVEL to uppercase
+    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
     logging.basicConfig(
         level=os.getenv("LOG_LEVEL", "INFO").upper(),
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",

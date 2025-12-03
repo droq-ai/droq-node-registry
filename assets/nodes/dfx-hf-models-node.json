@@ -1,15 +1,30 @@
 {
+  "version": "0.1.0",
   "node_id": "dfx-hf-models-node",
   "name": "DFX Hugging Face Models Node",
-  "description": "Execute Hugging Face models locally via a generic /api/v1/execute endpoint.",
+  "description": "A node providing local execution of Hugging Face models as DroqFlow components.",
+  "author": "Droq Team",
   "api_url": "http://localhost:8006",
+  "created_at": "2025-11-25T15:04:15Z",
   "ip_address": "127.0.0.1",
   "status": "active",
-  "docker_image": "dfx-hf-models-node:latest",
+  "docker_image": "droq-ai/dfx-hf-models-node:latest",
   "deployment_location": "local",
-  "source_code_location": "../dfx-hf-models-node",
+  "source_code_location": "nodes/dfx-hf-models-node",
   "components": {
-    "DFXEmbeddingsComponent": "dfx.components.minilm_embeddings",
-    "DFXExportEmbeddingsDataComponent": "dfx.components.export_embeddings_data"
-  }
+    "MiniLMEmbeddingsComponent": {
+      "path": "dfx.components.minilm_embeddings",
+      "description": "Generate embeddings using the locally stored all-MiniLM-L6-V2 SentenceTransformer model.",
+      "author": "Droq Team"
+    },
+    "DFXExportEmbeddingsDataComponent": {
+      "path": "dfx.components.export_embeddings_data",
+      "description": "Merge outputs from multiple embedding components into separate data and embedding streams.",
+      "author": "Droq Team"
+    }
+  },
+  "repository_url": "https://github.com/droq-ai/dfx-hf-models-node",
+  "category": "droq-core",
+  "commit": "108435b5c1dbc8b6d509c657978092a8330c6657",
+  "updated_at": "2025-11-28T11:26:34Z"
 }

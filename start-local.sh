@@ -22,9 +22,9 @@ fi
 
 # Get configuration from environment or use defaults
 HOST="${HOST:-0.0.0.0}"
-PORT="${PORT:-8002}"
+PORT="${PORT:-8000}"
 RELOAD="${RELOAD:-true}"
-LOG_LEVEL="${LOG_LEVEL:-INFO}"
+LOG_LEVEL="${LOG_LEVEL:-info}"
 
 echo "Configuration:"
 echo "  Host: $HOST"
@@ -36,11 +36,10 @@ echo "Starting registry service on http://$HOST:$PORT"
 echo "Press Ctrl+C to stop"
 echo ""
 
-# Run the registry service
-export HOST="${HOST:-0.0.0.0}"
-export PORT="${PORT:-8002}"
-export RELOAD="${RELOAD:-true}"
-export LOG_LEVEL="${LOG_LEVEL:-INFO}"
-
-uv run droq-registry-service
+if [ "$RELOAD" = "true" ]; then
+    # Use import string for reload mode
+    uv run uvicorn registry.main:app --host $HOST --port $PORT --reload --log-level $LOG_LEVEL
+else
+    uv run droq-registry-service
+fi
 

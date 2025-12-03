@@ -1,0 +1,26 @@
+{
+  "node_id": "dfx-math-executor-node",
+  "name": "Droq math multiply",
+  "description": "Droq DFX node that provides a component to multiply two numbers.",
+  "version": "1.0.0",
+  "api_url": "http://localhost:8003",
+  "ip_address": "0.0.0.0",
+  "docker_image": "droq/langflow-executor:v1",
+  "deployment_location": "local",
+  "status": "active",
+  "author": "Dorq",
+  "created_at": "2025-11-14T21:11:12Z",
+  "source_code_location": "nodes/dfx-math-executor-node",
+  "components": {
+    "Multiply": {
+      "path": "dfx.math.component.multiply",
+      "description": "Multiplies two numbers together",
+      "display_name": "DFX Multiply",
+      "author": "Dorq"
+    }
+  },
+  "repository_url": "https://github.com/droq-ai/dfx-math-executor-node",
+  "category": "droq-core",
+  "commit": "79cf4e67bf2c2c3a5b3f24f0cdd46bbbf6ea6471",
+  "updated_at": "2025-11-27T22:10:32Z"
+}

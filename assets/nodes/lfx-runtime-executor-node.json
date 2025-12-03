@@ -1,16 +1,16 @@
 {
-  "node_id": "lfx-tool-executor-node",
+  "node_id": "lfx-runtime-executor-node",
   "name": "Langflow Executor Node",
   "description": "Langflow Component Executor Node - Executes Langflow components in isolated environments with comprehensive AI model integrations, data processing capabilities, and workflow orchestration",
   "version": "1.0.0",
-  "api_url": "http://localhost:8005",
+  "api_url": "http://localhost:8000",
   "ip_address": "0.0.0.0",
   "docker_image": "droq/langflow-executor:v1",
   "deployment_location": "local",
   "status": "active",
   "author": "Langflow",
-  "created_at": "2025-11-17T20:44:53Z",
-  "source_code_location": "nodes/lfx-tool-executor-node",
+  "created_at": "2025-11-14T16:10:12Z",
+  "source_code_location": "nodes/lfx-runtime-executor-node",
   "components": {
     "AIMLEmbeddingsComponent": {
       "path": "lfx.src.lfx.components.aiml.aiml_embeddings",
@@ -2095,8 +2095,8 @@
       "display_name": "Zep Chat Memory"
     }
   },
-  "repository_url": "https://github.com/droq-ai/lfx-tool-executor-node",
+  "repository_url": "https://github.com/droq-ai/lfx-runtime-executor-node",
   "category": "droq-core",
-  "commit": "98e70683dace6d3969ac0ead220600999ad3dfc3",
-  "updated_at": "2025-11-27T09:29:44Z"
+  "commit": "cb5bde59d182e181a74243eb551156a093c17c95",
+  "updated_at": "2025-11-25T20:51:11Z"
 }
