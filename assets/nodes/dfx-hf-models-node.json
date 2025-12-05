@@ -8,7 +8,8 @@
   "created_at": "2025-11-25T15:04:15Z",
   "ip_address": "127.0.0.1",
   "status": "active",
-  "docker_image": "droq-ai/dfx-hf-models-node:latest",
+  "docker_image": "droqai/dfx-hf-models-node:latest",
+  "category": "Hugging Face",
   "deployment_location": "local",
   "source_code_location": "nodes/dfx-hf-models-node",
   "components": {
@@ -24,7 +25,6 @@
     }
   },
   "repository_url": "https://github.com/droq-ai/dfx-hf-models-node",
-  "category": "droq-core",
-  "commit": "108435b5c1dbc8b6d509c657978092a8330c6657",
-  "updated_at": "2025-11-28T11:26:34Z"
+  "commit": "4e27ec51757d999a07650b764d1b881729b2a12e",
+  "updated_at": "2025-12-05T10:44:07Z"
 }

@@ -1,13 +1,14 @@
 {
   "node_id": "lfx-tool-executor-node",
-  "name": "Langflow Executor Node",
-  "description": "Langflow Component Executor Node - Executes Langflow components in isolated environments with comprehensive AI model integrations, data processing capabilities, and workflow orchestration",
+  "name": "LFX Tool Executor Node",
+  "description": "Langflow Tool Executor Node - Executes Langflow tools in isolated environments with comprehensive AI model integrations, data processing capabilities, and workflow orchestration",
   "version": "1.0.0",
   "api_url": "http://localhost:8005",
   "ip_address": "0.0.0.0",
-  "docker_image": "droq/langflow-executor:v1",
+  "docker_image": "droqai/lfx-tool-executor-node",
   "deployment_location": "local",
   "status": "active",
+  "category": "Langflow",
   "author": "Langflow",
   "created_at": "2025-11-17T20:44:53Z",
   "source_code_location": "nodes/lfx-tool-executor-node",
@@ -68,7 +69,6 @@
     }
   },
   "repository_url": "https://github.com/droq-ai/lfx-tool-executor-node",
-  "category": "droq-core",
-  "commit": "a4e6215982ab417d8a6e179294b88461bd16484c",
-  "updated_at": "2025-12-04T15:25:31Z"
+  "commit": "81312579492fa909b45679787b29fba2480c96e3",
+  "updated_at": "2025-12-05T10:48:29Z"
 }
