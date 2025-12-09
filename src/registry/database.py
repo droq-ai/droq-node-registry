@@ -125,7 +125,17 @@ async def bootstrap_from_assets():
 
                 # First, try to get components directly from the config
                 if "components" in node_config:
-                    components_map = node_config["components"]
+                    raw_components = node_config["components"]
+                    # Handle both new format (dict with path) and old format (simple string)
+                    for component_name, component_data in raw_components.items():
+                        if isinstance(component_data, dict):
+                            # New format: extract path from dictionary
+                            components_map[component_name] = component_data.get("path", "")
+                        elif isinstance(component_data, str):
+                            # Old format: string is the path
+                            components_map[component_name] = component_data
+                        else:
+                            logger.warning(f"Invalid component data format for {component_name} in node {node_id}")
                     logger.info(f"Loaded {len(components_map)} components directly from node config for {node_id}")
                 # Fallback to loading from components_json_path (for backward compatibility)
                 elif "components_json_path" in node_config:

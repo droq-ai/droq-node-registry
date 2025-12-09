@@ -14,3 +14,7 @@
 	path = nodes/dfx-hf-models-node
 	url = git@github.com:droq-ai/dfx-hf-models-node.git
 	branch = main
+[submodule "nodes/dfx-social-node"]
+	path = nodes/dfx-social-node
+	url = git@github.com:droq-ai/dfx-social-node.git
+	branch = ahmed/feat/add-social-telegram-message
