@@ -200,6 +200,7 @@ async def get_node_by_component_endpoint(component_class: str):
     Raises:
         HTTPException: If component not found in any node
     """
+    logger.info(f"Looking up node for component '{component_class}'")
     result = await get_node_by_component(component_class)
     
     if not result:

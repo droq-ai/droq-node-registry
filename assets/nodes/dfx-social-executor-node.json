@@ -12,7 +12,7 @@
   "deployment_location": "local",
   "source_code_location": "nodes/dfx-social-node",
   "components": {
-    "TelegramMessageComponent": {
+    "DFXTelegramComponent": {
       "path": "dfx.social.telegram.telegram_message",
       "description": "Send messages to Telegram chats via Bot API with comprehensive configuration options including text formatting (Markdown/HTML), web preview control, and silent notifications.",
       "author": "Droq Team"

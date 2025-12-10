@@ -22,7 +22,7 @@ fi
 
 # Get configuration from environment or use defaults
 HOST="${HOST:-0.0.0.0}"
-PORT="${PORT:-8000}"
+PORT="${PORT:-8002}"
 RELOAD="${RELOAD:-true}"
 LOG_LEVEL="${LOG_LEVEL:-info}"
 
