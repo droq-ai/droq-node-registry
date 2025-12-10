@@ -13,14 +13,14 @@
   "created_at": "2025-11-14T21:11:12Z",
   "source_code_location": "nodes/dfx-math-executor-node",
   "components": {
-    "Multiply": {
+    "DFXMultiplyComponent": {
       "path": "dfx.math.component.multiply",
       "description": "Multiplies two numbers together",
       "display_name": "DFX Multiply",
-      "author": "Dorq"
+      "author": "Dorq team"
     }
   },
   "repository_url": "https://github.com/droq-ai/dfx-math-executor-node",
-  "commit": "d51663a642343d944caf80496ed195c9982e3910",
-  "updated_at": "2025-12-05T10:53:06Z"
+  "commit": "74a7d243f6115a7d1df17b233ac2e3933b2b716c",
+  "updated_at": "2025-12-07T08:05:12Z"
 }

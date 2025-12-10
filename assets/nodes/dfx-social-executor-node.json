@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "node_id": "dfx-social-executor-node",
+  "name": "DFX Social Executor Node",
+  "description": "A DFX social node with Telegram Bot API integration for message sending and bot management. Provides components for sending text messages with formatting options, chat management, and bot information retrieval.",
+  "author": "Droq Team",
+  "api_url": "http://localhost:8007",
+  "created_at": "2025-11-28T10:42:44Z",
+  "ip_address": "127.0.0.1",
+  "status": "active",
+  "docker_image": "droqai/dfx-social-node:latest",
+  "deployment_location": "local",
+  "source_code_location": "nodes/dfx-social-node",
+  "components": {
+    "DFXTelegramComponent": {
+      "path": "dfx.social.telegram.telegram_message",
+      "description": "Send messages to Telegram chats via Bot API with comprehensive configuration options including text formatting (Markdown/HTML), web preview control, and silent notifications.",
+      "author": "Droq Team"
+    }
+  },
+  "repository_url": "https://github.com/droq-ai/dfx-social-node",
+  "category": "droq-core",
+  "commit": "2b1d000ce09b2b6430ae42a3c9fadece9d0fa199",
+  "updated_at": "2025-12-09T06:35:31Z"
+}
