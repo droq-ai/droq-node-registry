@@ -733,6 +733,18 @@
       "author": "Langflow",
       "display_name": "Data \u2192 DataFrame"
     },
+    "DFXMergeComponent": {
+      "path": "lfx.src.lfx.components.dfx.merge",
+      "description": "Merge multiple Data/DataFrame/Message inputs into a single DataFrame output. Waits for all inputs before merging.",
+      "author": "Droq Team",
+      "display_name": "DFX Merge"
+    },
+    "DFXSplitComponent": {
+      "path": "lfx.src.lfx.components.dfx.split",
+      "description": "Split a Data/Message containing a list into multiple Data outputs. Outputs are dynamically created based on the list length.",
+      "author": "Droq Team",
+      "display_name": "DFX Split"
+    },
     "DeepSeekModelComponent": {
       "path": "lfx.src.lfx.components.deepseek.deepseek",
       "description": "Generate text using DeepSeek LLMs.",
