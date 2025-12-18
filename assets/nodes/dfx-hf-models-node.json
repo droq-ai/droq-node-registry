@@ -5,7 +5,7 @@
   "description": "A node providing local execution of Hugging Face models as DroqFlow components.",
   "author": "Droq Team",
   "api_url": "http://localhost:8006",
-  "created_at": "2025-11-25T15:04:15Z",
+  "created_at": "2025-11-25T14:04:15Z",
   "ip_address": "127.0.0.1",
   "status": "active",
   "docker_image": "droqai/dfx-hf-models-node:latest",
@@ -22,9 +22,14 @@
       "path": "dfx.components.export_embeddings_data",
       "description": "Merge outputs from multiple embedding components into separate data and embedding streams.",
       "author": "Droq Team"
+    },
+    "LLMLinguaComponent": {
+      "path": "dfx.components.llmlingua",
+      "description": "Compress text using LLMLingua-2 to reduce token count while preserving content quality.",
+      "author": "Droq Team"
     }
   },
   "repository_url": "https://github.com/droq-ai/dfx-hf-models-node",
-  "commit": "4e27ec51757d999a07650b764d1b881729b2a12e",
-  "updated_at": "2025-12-05T10:44:07Z"
+  "commit": "45d92424261bfeb0a83430af90dd04ecd8bf2fb7",
+  "updated_at": "2025-12-18T12:37:00Z"
 }
