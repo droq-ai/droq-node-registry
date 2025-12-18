@@ -102,30 +102,54 @@ async def bootstrap_from_assets():
                     continue
 
                 # Insert or update node metadata
+                # Ensure all values are strings or None (not dicts or other types)
+                metadata_json_str = json.dumps(node_config)  # Store full config as JSON for flexibility
+                
+                # Prepare values with type checking
+                values = (
+                    str(node_id) if node_id else None,
+                    str(node_config.get("name", "")) if node_config.get("name") else "",
+                    str(node_config.get("description", "")) if node_config.get("description") else "",
+                    str(node_config.get("source_code_location")) if node_config.get("source_code_location") else None,
+                    str(node_config.get("docker_image")) if node_config.get("docker_image") else None,
+                    str(node_config.get("deployment_location", "local")),
+                    str(node_config.get("api_url")) if node_config.get("api_url") else None,
+                    str(node_config.get("ip_address")) if node_config.get("ip_address") else None,
+                    str(node_config.get("status", "active")),
+                    metadata_json_str,
+                )
+                
+                # Debug: Check for dict types
+                for i, val in enumerate(values):
+                    if isinstance(val, dict):
+                        logger.error(f"Parameter {i} is a dict for node {node_id}: {val}")
+                        raise ValueError(f"Parameter {i} cannot be a dict, got: {type(val)}")
+                
                 await conn.execute("""
                     INSERT OR REPLACE INTO nodes (
                         node_id, name, description, source_code_location,
                         docker_image, deployment_location, api_url, ip_address, status, metadata_json
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    node_id,
-                    node_config.get("name", ""),
-                    node_config.get("description", ""),
-                    node_config.get("source_code_location"),
-                    node_config.get("docker_image"),
-                    node_config.get("deployment_location", "local"),
-                    node_config.get("api_url"),
-                    node_config.get("ip_address"),
-                    node_config.get("status", "active"),
-                    json.dumps(node_config),  # Store full config as JSON for flexibility
-                ))
+                """, values)
 
                 # Load components from node config (either from "components" key or "components_json_path")
                 components_map = {}
-
+                
                 # First, try to get components directly from the config
                 if "components" in node_config:
-                    components_map = node_config["components"]
+                    raw_components = node_config["components"]
+                    # Handle both formats:
+                    # Old format: {"ComponentName": "module.path"}
+                    # New format: {"ComponentName": {"path": "module.path", "description": "...", ...}}
+                    for component_class, component_data in raw_components.items():
+                        if isinstance(component_data, str):
+                            # Old format: direct string path
+                            components_map[component_class] = component_data
+                        elif isinstance(component_data, dict) and "path" in component_data:
+                            # New format: nested object with path
+                            components_map[component_class] = component_data["path"]
+                        else:
+                            logger.warning(f"Invalid component format for {component_class} in {node_id}, skipping")
                     logger.info(f"Loaded {len(components_map)} components directly from node config for {node_id}")
                 # Fallback to loading from components_json_path (for backward compatibility)
                 elif "components_json_path" in node_config:

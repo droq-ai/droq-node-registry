@@ -2,7 +2,10 @@
 
 import json
 import logging
+import os
+import socket
 from typing import Any
+from urllib.parse import urlparse, urlunparse
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -22,6 +25,78 @@ app = FastAPI(
     description="Registry service for mapping executor nodes to their supported components",
     version="0.1.0",
 )
+
+
+def _resolve_api_url(api_url: str | None, node_id: str) -> str | None:
+    """Resolve API URL based on deployment environment.
+    
+    Maps between localhost URLs (for local development) and Docker service names
+    (for Docker deployments) based on the environment.
+    
+    Mapping rules:
+    - If running in Docker and URL uses localhost/127.0.0.1, replace with Docker service name
+    - Maps node_id to Docker service name (handles common patterns like -node suffix)
+    - If not in Docker, keep localhost URLs as-is
+    - If URL already uses a service name, keep it as-is
+    
+    Args:
+        api_url: Original API URL from config (e.g., "http://localhost:8000")
+        node_id: Node ID from config (may differ from Docker service name)
+        
+    Returns:
+        Resolved API URL appropriate for the current environment
+    """
+    if not api_url:
+        return None
+    
+    # Map node_id to Docker service name
+    # Common pattern: node_id ends with "-node" but service name doesn't
+    docker_service_name = node_id
+    if node_id == "lfx-runtime-executor-node":
+        docker_service_name = "lfx-runtime-executor"
+    elif node_id == "langflow-executor-node":
+        docker_service_name = "lfx-runtime-executor"
+    # Add more mappings as needed
+    
+    # Check if we're running in Docker
+    # Method 1: Check for Docker-specific environment variables or files
+    is_docker = os.path.exists("/.dockerenv") or os.environ.get("DOCKER_ENV") == "1"
+    
+    # Method 2: Try to resolve the docker_service_name as a hostname
+    # If it resolves, we're likely in Docker
+    if not is_docker:
+        try:
+            socket.gethostbyname(docker_service_name)
+            is_docker = True
+        except (socket.gaierror, OSError):
+            pass
+    
+    if not is_docker:
+        # Not in Docker, return URL as-is (localhost URLs work fine)
+        return api_url
+    
+    # We're in Docker - map localhost URLs to Docker service names
+    try:
+        parsed = urlparse(api_url)
+        if parsed.hostname in ("localhost", "127.0.0.1"):
+            # Replace hostname with docker_service_name
+            new_netloc = f"{docker_service_name}:{parsed.port}" if parsed.port else docker_service_name
+            resolved_url = urlunparse((
+                parsed.scheme,
+                new_netloc,
+                parsed.path,
+                parsed.params,
+                parsed.query,
+                parsed.fragment
+            ))
+            logger.debug(f"Resolved API URL for {node_id}: {api_url} -> {resolved_url} (service: {docker_service_name})")
+            return resolved_url
+        else:
+            # URL already uses a service name or IP, keep it as-is
+            return api_url
+    except Exception as e:
+        logger.warning(f"Failed to resolve API URL for {node_id}: {e}")
+        return api_url
 
 
 class NodeMetadata(BaseModel):
@@ -110,6 +185,7 @@ async def get_nodes():
                     pass
             
             # Build NodeMetadata from database row
+            resolved_api_url = _resolve_api_url(db_node.get("api_url"), node_id)
             metadata = NodeMetadata(
                 node_id=db_node["node_id"],
                 name=db_node["name"],
@@ -117,7 +193,7 @@ async def get_nodes():
                 source_code_location=db_node.get("source_code_location"),
                 docker_image=db_node.get("docker_image"),
                 deployment_location=db_node["deployment_location"],
-                api_url=db_node.get("api_url"),
+                api_url=resolved_api_url,
                 ip_address=db_node.get("ip_address"),
                 status=db_node["status"],
                 supported_components=supported_components,
@@ -168,6 +244,7 @@ async def get_node_endpoint(node_id: str):
             pass
     
     # Build NodeMetadata from database row
+    resolved_api_url = _resolve_api_url(db_node.get("api_url"), node_id)
     metadata = NodeMetadata(
         node_id=db_node["node_id"],
         name=db_node["name"],
@@ -175,7 +252,7 @@ async def get_node_endpoint(node_id: str):
         source_code_location=db_node.get("source_code_location"),
         docker_image=db_node.get("docker_image"),
         deployment_location=db_node["deployment_location"],
-        api_url=db_node.get("api_url"),
+        api_url=resolved_api_url,
         ip_address=db_node.get("ip_address"),
         status=db_node["status"],
         supported_components=supported_components,
@@ -214,14 +291,16 @@ async def get_node_by_component_endpoint(component_class: str):
     supported_components = list(components_map.keys())
     
     # Build NodeMetadata from database row
+    node_id = db_node["node_id"]
+    resolved_api_url = _resolve_api_url(db_node.get("api_url"), node_id)
     metadata = NodeMetadata(
-        node_id=db_node["node_id"],
+        node_id=node_id,
         name=db_node["name"],
         description=db_node.get("description", ""),
         source_code_location=db_node.get("source_code_location"),
         docker_image=db_node.get("docker_image"),
         deployment_location=db_node["deployment_location"],
-        api_url=db_node.get("api_url"),
+        api_url=resolved_api_url,
         ip_address=db_node.get("ip_address"),
         status=db_node["status"],
         supported_components=supported_components,
